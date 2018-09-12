@@ -43,8 +43,11 @@
     "mocha": "^5.2.0"
   },
   "dependencies": {
+    "bignumber.js": "^7.2.1",
     "isparta": "^4.1.0",
     "jcc_common": "^0.1.0",
-    "jcc_wallet": "^0.1.4"
+    "jcc_exchange": "^1.0.0",
+    "jcc_wallet": "^0.1.4",
+    "vue": "^2.5.17"
   }
 }
