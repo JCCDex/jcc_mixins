@@ -1,7 +1,7 @@
 const BigNumber = require('bignumber.js');
 const {
     isNumber,
-    isEmptyObject,
+    isEmptyObject
 } = require('jcc_common');
 const formatNumber = require('./utils').formatNumber
 module.exports = {
