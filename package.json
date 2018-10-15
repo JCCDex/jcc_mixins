@@ -1,6 +1,6 @@
 {
   "name": "jcc_mixins",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "vue mixins of jcc",
   "files": [
     "lib"
@@ -8,6 +8,7 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "gulp",
+    "deploy": "./publish.sh",
     "coveralls": "cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js"
   },
   "repository": {
@@ -24,6 +25,7 @@
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.6",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.7.0",
     "canvas-prebuilt": "^1.6.5-prerelease.1",
     "chai": "^4.1.2",
