@@ -114,7 +114,19 @@ module.exports = {
                 let hosts = this.exHosts;
                 let port = this.exPort;
                 let https = this.https;
-                createOrder(counter, base, issuer, address, type, amount, sum, secret, hosts, port, https).then(() => {
+                createOrder({
+                    counter,
+                    base,
+                    issuer,
+                    address,
+                    secret,
+                    type,
+                    amount,
+                    sum,
+                    hosts,
+                    port,
+                    https
+                }).then(() => {
                     return resolve();
                 }).catch(err => {
                     return reject(err);
