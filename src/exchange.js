@@ -1,4 +1,4 @@
-const JcWalletTool = require('jcc_wallet').JcWalletTool;
+const JcWalletTool = require('jcc_wallet/lib/jctool');
 const createOrder = require('jcc_exchange').createOrder;
 const isNumber = require('jcc_common').isNumber;
 const formatNumber = require('./utils').formatNumber;
@@ -7,7 +7,6 @@ const decimal = require('./decimal');
 const currency = require('./currency');
 const exchangeRate = require('./exchange_rate');
 const nodeConfig = require('./node_config');
-const bus = require('./utils').bus;
 module.exports = {
     data() {
         return {
@@ -23,15 +22,6 @@ module.exports = {
         }
     },
     mixins: [exchangeRate, currency, decimal, nodeConfig],
-    created() {
-        bus.$on("setBasePrice", this.setBasePrice);
-        bus.$on("choosePrice", this.choosePrice);
-    },
-    beforeDestroy() {
-        clearInterval(this.id);
-        bus.$off("setBasePrice", this.setBasePrice);
-        bus.$off("choosePrice", this.choosePrice);
-    },
     methods: {
         limitDecimal() {
             if (this.counter.toLowerCase() !== "swt") {

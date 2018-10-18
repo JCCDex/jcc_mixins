@@ -3,7 +3,6 @@ const {
     toThousandSeperator,
     scientificToDecimal
 } = require('jcc_common');
-const Vue = require('vue');
 
 const formatNumber = (num, decimal, thousands = false) => {
     num = parseFloat(num);
@@ -23,9 +22,6 @@ const formatNumber = (num, decimal, thousands = false) => {
     return num;
 }
 
-const bus = new Vue();
-
 module.exports = {
-    formatNumber,
-    bus
+    formatNumber
 }

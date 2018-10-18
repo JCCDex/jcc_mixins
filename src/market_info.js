@@ -1,7 +1,6 @@
 const {
     isNumber
 } = require('jcc_common');
-const bus = require('./utils').bus;
 module.exports = {
     methods: {
         isNumber(value) {
@@ -59,7 +58,6 @@ module.exports = {
             if (!isNumber(price)) {
                 price = "--";
             }
-            bus.$emit("setTop10Price", price, this.rate);
             return price;
         },
         volume24() {
