@@ -1,10 +1,7 @@
 const isNumber = require('jcc_common').isNumber;
 
 module.exports = {
-    computed: {
-        pairs() {
-            return this.$store.getters.transactionPairs;
-        },
+    methods: {
         getPairConfig(pairs, base, counter) {
             let minAmount = 0;
             let isInteger = false;
@@ -27,6 +24,11 @@ module.exports = {
                 priceDecimal,
                 amountDecimal
             };
+        }
+    },
+    computed: {
+        pairs() {
+            return this.$store.getters.transactionPairs;
         },
         priceDecimal() {
             let config = this.getPairConfig(this.pairs, this.base, this.counter);
