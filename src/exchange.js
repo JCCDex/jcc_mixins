@@ -132,7 +132,7 @@ module.exports = {
             return this.type === 0 ? this.$t('message.bidPrice') : this.$t('message.askPrice');
         },
         numText() {
-            return this.type === 0 ? this.$t('message.bidPrice') : this.$t('message.askPrice');
+            return this.type === 0 ? this.$t('message.bidAmount') : this.$t('message.askAmount');
         },
         buttonText() {
             let base = this.baseTitle;

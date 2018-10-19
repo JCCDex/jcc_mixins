@@ -1,6 +1,6 @@
 {
   "name": "jcc_mixins",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "vue mixins of jcc",
   "files": [
     "lib"
