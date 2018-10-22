@@ -27,7 +27,7 @@ module.exports = {
             if (this.counter.toLowerCase() !== "swt") {
                 return
             }
-            let value = this.form.price
+            let value = parseFloat(this.form.price)
             if (!isNumber(value)) {
                 this.form.price = 0;
                 return
@@ -174,7 +174,7 @@ module.exports = {
             let price = this.form.price;
             let amount = this.form.amount;
             let sum
-            if (isNumber(price) && isNumber(amount)) {
+            if (isNumber(parseFloat(price)) && isNumber(parseFloat(amount))) {
                 sum = new BigNumber(price).multipliedBy(amount);
                 sum = sum.toFixed(6);
                 // sum = scientificToDecimal(Number(sum))
@@ -196,7 +196,7 @@ module.exports = {
                 let rate = this.getExchangeRate(counter);
                 sum = new BigNumber(price).multipliedBy(rate);
                 sum = sum.toString();
-                sum = isNumber(sum) ? formatNumber(sum) : 0;
+                sum = isNumber(parseFloat(sum)) ? sum : 0;
             }
             return formatNumber(sum);
         },
