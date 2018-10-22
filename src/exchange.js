@@ -27,14 +27,14 @@ module.exports = {
             if (this.counter.toLowerCase() !== "swt") {
                 return
             }
-            let value = this.form.price
+            let value = parseFloat(this.form.price);
             if (!isNumber(value)) {
-                this.form.price = 0;
+                this.form.price = "0";
                 return
             }
             let n = 10 ** this.priceDecimal
             let price = Math.round(value * n) / n;
-            this.form.price = price;
+            this.form.price = price.toString();
         },
         setBasePrice(hightestBuyPrice = 0, lowestSellPrice = 0) {
             this.hightestBuyPrice = hightestBuyPrice;
@@ -171,9 +171,9 @@ module.exports = {
             return formatNumber(freezed);
         },
         sum() {
-            let price = this.form.price;
-            let amount = this.form.amount;
-            let sum
+            let price = parseFloat(this.form.price);
+            let amount = parseFloat(this.form.amount);
+            let sum;
             if (isNumber(price) && isNumber(amount)) {
                 sum = new BigNumber(price).multipliedBy(amount);
                 sum = sum.toFixed(6);
@@ -195,8 +195,7 @@ module.exports = {
             } else {
                 let rate = this.getExchangeRate(counter);
                 sum = new BigNumber(price).multipliedBy(rate);
-                sum = sum.toString();
-                sum = isNumber(sum) ? formatNumber(sum) : 0;
+                sum = isNumber(sum) ? sum : 0;
             }
             return formatNumber(sum);
         },
