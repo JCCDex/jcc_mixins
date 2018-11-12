@@ -8,7 +8,6 @@ const {
   moacWallet
 } = require("jcc_wallet");
 const isEmptyObject = require('jcc_common').isEmptyObject;
-const Wallet = require('jcc_jingtum_base_lib').Wallet;
 
 module.exports = {
   computed: {
@@ -117,10 +116,14 @@ module.exports = {
      * @param {function} callBack
      */
     importSwtWalletFormSecret(secret, tradePassword, callBack) {
-      if (!jtWallet.isValidSecret(secret, 'swt')) {
+      let address = jtWallet.getAddress(secret);
+      if (address === null) {
         throw new Error('secret is invalid');
       }
-      let wallet = Wallet.fromSecret(secret);
+      let wallet = {
+        address,
+        secret
+      }
       jcWallet.buildJCWallet(tradePassword, wallet, callBack)
     },
 

@@ -1,16 +1,16 @@
-const jCurrency = require('./currency');
-const jDecimal = require('./decimal');
-const jExchangeRate = require('./exchange_rate');
-const jExchange = require('./exchange');
-const jMarketInfo = require('./market_info');
-const jNodeConfig = require('./node_config');
-const jWallet = require('./wallet');
+import jCurrency from './currency';
+import jDecimal from './decimal';
+import jExchange from './exchange';
+import jExchangeRate from './exchange_rate';
+import jMarketInfo from './market_info';
+import jNodeConfig from './node_config';
+import jWallet from './wallet';
 
-exports = module.exports = {
+export {
     jCurrency,
     jDecimal,
-    jExchangeRate,
     jExchange,
+    jExchangeRate,
     jMarketInfo,
     jNodeConfig,
     jWallet

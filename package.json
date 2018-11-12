@@ -1,6 +1,6 @@
 {
   "name": "jcc_mixins",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "vue mixins of jcc",
   "files": [
     "lib"
@@ -49,6 +49,6 @@
     "isparta": "^4.1.0",
     "jcc_common": "^0.1.0",
     "jcc_exchange": "^1.0.0",
-    "jcc_wallet": "^0.1.4"
+    "jcc_wallet": "^0.1.8"
   }
 }
