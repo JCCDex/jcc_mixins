@@ -4,6 +4,7 @@ const jExchangeRate = require('./exchange_rate');
 const jExchange = require('./exchange');
 const jMarketInfo = require('./market_info');
 const jNodeConfig = require('./node_config');
+const jWallet = require('./wallet');
 
 exports = module.exports = {
     jCurrency,
@@ -11,5 +12,6 @@ exports = module.exports = {
     jExchangeRate,
     jExchange,
     jMarketInfo,
-    jNodeConfig
+    jNodeConfig,
+    jWallet
 }
