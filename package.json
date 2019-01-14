@@ -45,6 +45,6 @@
     "bignumber.js": "^7.2.1",
     "jcc_common": "^0.1.0",
     "jcc_exchange": "^1.0.0",
-    "jcc_wallet": "^0.2.0"
+    "jcc_wallet": "^0.2.2"
   }
 }
