@@ -1,6 +1,6 @@
 {
   "name": "jcc_mixins",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "vue mixins of jcc",
   "files": [
     "lib"
@@ -22,20 +22,20 @@
   },
   "homepage": "https://github.com/JCCDex/jcc_mixins#readme",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
+    "@babel/core": "^7.3.3",
+    "@babel/plugin-transform-runtime": "^7.2.0",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/runtime": "^7.4.2",
     "babel-eslint": "^10.0.1",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.7.0",
     "chai": "^4.1.2",
     "coveralls": "^3.0.2",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-node": "^7.0.1",
     "eslint-plugin-promise": "^4.0.0",
-    "eslint-plugin-standard": "^3.1.0",
+    "eslint-plugin-standard": "^4.0.0",
     "gulp": "^4.0.0",
-    "gulp-babel": "^7.0.1",
+    "gulp-babel": "^8.0.0",
     "gulp-eslint": "^5.0.0",
     "jsdom": "^11.12.0",
     "mocha": "^5.2.0",
@@ -44,7 +44,7 @@
   "dependencies": {
     "bignumber.js": "^7.2.1",
     "jcc_common": "^0.1.0",
-    "jcc_exchange": "^1.0.0",
-    "jcc_wallet": "^0.2.4"
+    "jcc_exchange": "^1.0.7",
+    "jcc_wallet": "^0.2.6"
   }
 }
