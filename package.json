@@ -1,6 +1,6 @@
 {
   "name": "jcc_mixins",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "vue mixins of jcc",
   "files": [
     "lib"
@@ -44,7 +44,7 @@
   "dependencies": {
     "bignumber.js": "^7.2.1",
     "jcc_common": "^0.1.0",
-    "jcc_exchange": "^1.0.8",
+    "jcc_exchange": "^1.0.9",
     "jcc_wallet": "^0.3.5"
   }
 }
