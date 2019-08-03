@@ -1,5 +1,5 @@
 const JcWalletTool = require('jcc_wallet').JcWalletTool;
-const createOrder = require('jcc_exchange').createOrder;
+const JCCExchange = require('jcc_exchange').JCCExchange;
 const isNumber = require('jcc_common').isNumber;
 const formatNumber = require('./utils').formatNumber;
 const BigNumber = require('bignumber.js');
@@ -98,29 +98,18 @@ module.exports = {
         let base = this.base;
         let issuer = process.env.currencies.UST.issuer;
         let address = this.publicKey;
-        let type = this.type;
+        let type = this.type === 0 ? "buy" : "sell";
         let amount = this.form.amount;
         let sum = this.sum;
         let hosts = this.exHosts;
         let port = this.exPort;
         let https = this.https;
-        createOrder({
-          counter,
-          base,
-          issuer,
-          address,
-          secret,
-          type,
-          amount,
-          sum,
-          hosts,
-          port,
-          https
-        }).then(() => {
-          return resolve();
+        JCCExchange.init(hosts, port, https);
+        JCCExchange.createOrder(address, secret, amount, base, counter, sum, type, issuer).then(hash => {
+          return resolve(hash);
         }).catch(err => {
           return reject(err);
-        })
+        });
       });
     }
   },
