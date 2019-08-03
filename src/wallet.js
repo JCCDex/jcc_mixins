@@ -1,12 +1,4 @@
-const {
-  JcWalletTool,
-  jtWallet,
-  jcWallet,
-  callWallet,
-  stmWallet,
-  ethWallet,
-  moacWallet
-} = require("jcc_wallet");
+const { JcWalletTool, jtWallet, jcWallet, callWallet, stmWallet, ethWallet, moacWallet } = require("jcc_wallet");
 const isEmptyObject = require('jcc_common').isEmptyObject;
 
 module.exports = {

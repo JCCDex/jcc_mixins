@@ -7,11 +7,11 @@ import jNodeConfig from './node_config';
 import jWallet from './wallet';
 
 export {
-    jCurrency,
-    jDecimal,
-    jExchange,
-    jExchangeRate,
-    jMarketInfo,
-    jNodeConfig,
-    jWallet
+  jCurrency,
+  jDecimal,
+  jExchange,
+  jExchangeRate,
+  jMarketInfo,
+  jNodeConfig,
+  jWallet
 }

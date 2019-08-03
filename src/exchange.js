@@ -153,8 +153,10 @@ module.exports = {
       } else {
         aim = this.base;
       }
-      if (aim.toLowerCase() === "cnt") aim = "cny";
-      let available = balance[`balance_${aim.toLowerCase()}`];
+      if (aim.toLowerCase() === "cnt") {
+        aim = "cny";
+      }
+      let available = balance["balance_" + aim.toLowerCase()];
       return formatNumber(available);
     },
     freezed() {
@@ -167,7 +169,7 @@ module.exports = {
         aim = this.base;
       }
       if (aim.toLowerCase() === "cnt") aim = "cny";
-      let freezed = balance[`freezed_${aim.toLowerCase()}`];
+      let freezed = balance["freezed_" + aim.toLowerCase()];
       return formatNumber(freezed);
     },
     sum() {
