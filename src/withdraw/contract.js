@@ -13,6 +13,7 @@ export default {
   },
   mixins: [jNodeConfig],
   methods: {
+    /* istanbul ignore next  */
     init() {
       console.log('init');
       console.log("coinConfig = ", this.coinConfig)
@@ -141,7 +142,7 @@ export default {
           } catch (error) {
             return reject(error);
           }
-        }, 12000);
+        }, /* istanbul ignore next  */ process.env.NODE_ENV === "TESTING" ? 0 : 12000);
       });
     },
     withdrawEthereum(swtSecret, ethereumAddress, token, amount) {
@@ -187,7 +188,7 @@ export default {
           } catch (error) {
             return reject(error);
           }
-        }, 12000);
+        }, /* istanbul ignore next  */ process.env.NODE_ENV === "TESTING" ? 0 : 12000);
       });
     },
     // for erc20

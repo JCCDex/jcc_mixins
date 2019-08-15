@@ -30,6 +30,7 @@ module.exports = {
   moduleDirectories: ["node_modules"],
   collectCoverageFrom: [
     'src/withdraw/contract.js',
+    'src/deposit/contract.js',
     '!**/node_modules/**'
   ]
 }
