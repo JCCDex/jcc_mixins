@@ -89,7 +89,7 @@ export default {
         const moacGas = this.eth_moac_gas;
         const isJMOAC = token.toLowerCase() === "jmoac";
         if (!isJMOAC && new BigNumber(this.availableMOAC).lt(moacGas)) {
-          return reject(new Error(this.$t('message.withdraw.less_than_gas_limit')));
+          return reject(new Error(this.$t('message.withdraw.service_fee_not_enough')));
         }
         this.changeLoadingState(this.$t("message.withdraw.request_transfer_hash"));
 
@@ -134,7 +134,7 @@ export default {
         const ethGas = this.eth_moac_gas;
         const isJETH = token.toLowerCase() === "jeth";
         if (!isJETH && new BigNumber(this.availableETH).lt(ethGas)) {
-          return reject(new Error(this.$t('message.withdraw.less_than_gas_limit')));
+          return reject(new Error(this.$t('message.withdraw.service_fee_not_enough')));
         }
         this.changeLoadingState(this.$t("message.withdraw.request_transfer_hash"));
 
@@ -182,7 +182,7 @@ export default {
       let count = 0;
       while (gasHash === null) {
         // try 10
-        if (count >= 10) {
+        if (count === 10) {
           break;
         }
         try {

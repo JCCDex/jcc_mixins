@@ -73,8 +73,6 @@ describe('Withdraw', () => {
 
   describe("test withdrawStream api", function() {
 
-    jest.setTimeout(15000);
-
     const to = "japp9xxt2VHpRwHsoa76GWoQj1VdsjcZQJ";
     const address = testConfig.testStreamAddress;
     const token = "jstm";

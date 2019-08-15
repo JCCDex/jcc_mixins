@@ -127,7 +127,6 @@ export default {
     },
     getEthHost() {
       let ethHosts = this.$store.getters.hosts.ethHosts;
-      console.log(ethHosts)
       let host = getEthHost(ethHosts);
       return host;
     },
@@ -145,7 +144,7 @@ export default {
           const balance = await this.stmFingateInstance.getBalance(address);
           console.log('stream balance:', balance);
           if (new BigNumber(amount).gt(balance)) {
-            return reject(new Error(this.$t('message.deposit.more_than_available', { balance })));
+            return reject(new Error(this.$t('message.deposit.more_than_available_balance', { balance })));
           }
           this.changeLoadingState(this.$t("message.deposit.request_balance_success"));
           const hash = await this.stmFingateInstance.transfer(secret, destination, amount, memo);
@@ -167,7 +166,7 @@ export default {
           const balance = await this.bizInstance.balanceOf(address);
           console.log('bizain balance:', balance);
           if (new BigNumber(amount).gt(balance)) {
-            return reject(new Error(this.$t('message.deposit.more_than_available', { balance })));
+            return reject(new Error(this.$t('message.deposit.more_than_available_balance', { balance })));
           }
           this.changeLoadingState(this.$t("message.deposit.request_balance_success"));
           const hash = await this.bizInstance.transfer(secret, destination, amount, memo);
@@ -190,7 +189,7 @@ export default {
           const balance = await this.rippleFingateInstance.getXrpBalance(address);
           console.log('xrp balance:', balance);
           if (new BigNumber(amount).gt(balance)) {
-            return reject(new Error(this.$t('message.deposit.more_than_available', { balance })));
+            return reject(new Error(this.$t('message.deposit.more_than_available_balance', { balance })));
           }
           if (new BigNumber(balance).minus(amount).lt(limit)) {
             return reject(new Error(this.$t("message.deposit.xrp_limit")));
@@ -215,7 +214,7 @@ export default {
           const balance = await this.callFingateInstance.getCallBalance(address);
           console.log('call balance:', balance);
           if (new BigNumber(amount).gt(balance)) {
-            return reject(new Error(this.$t('message.deposit.more_than_available', { balance })));
+            return reject(new Error(this.$t('message.deposit.more_than_available_balance', { balance })));
           }
           this.changeLoadingState(this.$t("message.deposit.request_balance_success"));
           const hash = await this.callFingateInstance.transfer(secret, destination, amount, memo);
@@ -247,14 +246,14 @@ export default {
           if (isJMOAC) {
             try {
               if (new BigNumber(amount).gt(balance)) {
-                return reject(new Error(this.$t('message.deposit.more_than_available', { balance })));
+                return reject(new Error(this.$t('message.deposit.more_than_available_balance', { balance })));
               }
               if (new BigNumber(balance).minus(minLimit).lt(amount)) {
                 return reject(new Error(this.$t('message.deposit.moac_limit')));
               }
               const state = await moacFingateInstance.depositState(address);
               if (moacFingateInstance.isPending(state)) {
-                return reject(new Error(this.$t('message.deposit.previous_not_finish')));
+                return reject(new Error(this.$t('message.deposit.previous_deposit_not_finish')));
               }
               this.changeLoadingState(this.$t("message.deposit.request_balance_success"));
               const hash = await moacFingateInstance.deposit(memo.jtaddress, amount, secret);
@@ -278,12 +277,12 @@ export default {
               moacErc20Instance.init(tokenContract, moac);
               const state = await moacFingateInstance.depositState(address, tokenContract);
               if (moacFingateInstance.isPending(state)) {
-                return reject(new Error(this.$t('message.deposit.previous_not_finish')));
+                return reject(new Error(this.$t('message.deposit.previous_deposit_not_finish')));
               }
               let tokenBalance = await moacErc20Instance.balanceOf(address);
               console.log(coin + " balance:", tokenBalance);
               if (new BigNumber(amount).gt(tokenBalance)) {
-                return reject(new Error(this.$t('message.deposit.more_than_available', { balance: tokenBalance })));
+                return reject(new Error(this.$t('message.deposit.more_than_available_balance', { balance: tokenBalance })));
               }
               this.changeLoadingState(this.$t("message.deposit.request_balance_success"));
               let hash = await moacErc20Instance.transfer(secret, scAddress, amount);
@@ -326,14 +325,14 @@ export default {
           if (isJETH) {
             try {
               if (new BigNumber(amount).gt(ethBalance)) {
-                return reject(new Error(this.$t('message.deposit.more_than_available', { balance: ethBalance })));
+                return reject(new Error(this.$t('message.deposit.more_than_available_balance', { balance: ethBalance })));
               }
               if (new BigNumber(ethBalance).minus(minLimit).lt(amount)) {
                 return reject(new Error(this.$t('message.deposit.eth_limit')));
               }
               const state = await etherFingateInstance.depositState(address);
               if (etherFingateInstance.isPending(state)) {
-                return reject(new Error(this.$t('message.deposit.previous_not_finish')));
+                return reject(new Error(this.$t('message.deposit.previous_deposit_not_finish')));
               }
               this.changeLoadingState(this.$t("message.deposit.request_balance_success"));
               const hash = await etherFingateInstance.deposit(secret, memo.jtaddress, amount);
@@ -356,12 +355,12 @@ export default {
               etherErc20Instance.init(tokenContract, ethereumInstance);
               const state = await etherFingateInstance.depositState(address, tokenContract);
               if (etherFingateInstance.isPending(state)) {
-                return reject(new Error(this.$t('message.deposit.previous_not_finish')));
+                return reject(new Error(this.$t('message.deposit.previous_deposit_not_finish')));
               }
               const balance = await etherErc20Instance.balanceOf(address);
               console.log(coin + " balance:", balance);
               if (new BigNumber(amount).gt(balance)) {
-                return reject(new Error(this.$t('message.deposit.more_than_available', { balance: balance })));
+                return reject(new Error(this.$t('message.deposit.more_than_available_balance', { balance: balance })));
               }
               this.changeLoadingState(this.$t("message.deposit.request_balance_success"));
               const decimals = await etherErc20Instance.decimals();
