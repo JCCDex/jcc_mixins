@@ -49,12 +49,8 @@ export default {
       };
       const to = "japp9xxt2VHpRwHsoa76GWoQj1VdsjcZQJ";
       const data = this.serializePayment(swtSecret, to, amount, token, memo);
-      try {
-        const hash = await this.transfer(data);
-        return hash;
-      } catch (error) {
-        throw error;
-      }
+      const hash = await this.transfer(data);
+      return hash;
     },
     async withdrawCall(swtSecret, callAddress, token, amount) {
       const memo = {
@@ -63,12 +59,8 @@ export default {
       };
       const to = "jMCJrXRmycsT5tsVuge7Y65v9MrQi9r11E";
       const data = this.serializePayment(swtSecret, to, amount, token, memo);
-      try {
-        const hash = await this.transfer(data);
-        return hash;
-      } catch (error) {
-        throw error;
-      }
+      const hash = await this.transfer(data);
+      return hash;
     },
     async withdrawBizain(swtSecret, bizAddress, token, amount) {
       const memo = {
@@ -78,12 +70,8 @@ export default {
       };
       const to = "jDu7umDxKxeaHoj7eNdUn8YsGWTHZSuEGL";
       const data = this.serializePayment(swtSecret, to, amount, token, memo);
-      try {
-        const hash = await this.transfer(data);
-        return hash;
-      } catch (error) {
-        throw error;
-      }
+      const hash = await this.transfer(data);
+      return hash;
     },
     async withdrawRipple(swtSecret, rippleAddress, token, amount) {
       const memo = {
@@ -93,12 +81,8 @@ export default {
       };
       const to = "jQs5cAcZrKmyWSQgkmUtXsdeFMzwSYcBA4";
       const data = this.serializePayment(swtSecret, to, amount, token, memo);
-      try {
-        const hash = await this.transfer(data);
-        return hash;
-      } catch (error) {
-        throw error;
-      }
+      const hash = await this.transfer(data);
+      return hash;
     },
     withdrawMoac(swtSecret, moacAddress, token, amount) {
       return new Promise(async (resolve, reject) => {
