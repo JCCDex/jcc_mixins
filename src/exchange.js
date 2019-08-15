@@ -1,4 +1,4 @@
-const JcWalletTool = require('jcc_wallet').JcWalletTool;
+const JingchangWallet = require('jcc_wallet').JingchangWallet;
 const JCCExchange = require('jcc_exchange').JCCExchange;
 const isNumber = require('jcc_common').isNumber;
 const formatNumber = require('./utils').formatNumber;
@@ -56,8 +56,8 @@ module.exports = {
     },
     validatePassword(checked, password) {
       return new Promise((resolve, reject) => {
-        let inst = new JcWalletTool(this.jcWallet);
-        inst.validatePassword(password, 'swt').then(secret => {
+        let inst = new JingchangWallet(this.jcWallet);
+        inst.getSecretWithType(password, 'swt').then(secret => {
           this.secretFree(checked, password);
           this.confirmSubmit(secret).then(() => {
             return resolve();
