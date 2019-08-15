@@ -1,0 +1,8 @@
+{
+  "withdraw": {
+    "failed": "提币失败，请稍后再试！",
+    "less_than_gas_limit": "您的提币手续费不足",
+    "request_transfer_hash": "获取转账hash",
+    "transfering_gas": "燃料费扣取中"
+  }
+}

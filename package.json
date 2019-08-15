@@ -8,7 +8,7 @@
   "main": "lib/index.js",
   "scripts": {
     "deploy": "./publish.sh",
-    "test": "gulp",
+    "test": "jest --config test/unit/jest.conf.js",
     "coveralls": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
@@ -25,7 +25,14 @@
     "@babel/core": "^7.5.5",
     "@babel/plugin-transform-runtime": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
+    "@vue/test-utils": "^1.0.0-beta.29",
+    "babel-core": "^7.0.0-bridge.0",
     "babel-eslint": "^10.0.2",
+    "babel-jest": "^24.8.0",
+    "babel-plugin-import": "^1.12.0",
+    "babel-plugin-syntax-jsx": "^6.18.0",
+    "babel-plugin-transform-decorators-legacy": "^1.3.5",
+    "babel-plugin-transform-vue-jsx": "^3.7.0",
     "chai": "^4.2.0",
     "coveralls": "^3.0.5",
     "eslint-config-standard": "^13.0.1",
@@ -36,9 +43,19 @@
     "gulp": "^4.0.2",
     "gulp-babel": "^8.0.0",
     "gulp-eslint": "^6.0.0",
+    "jest": "^24.8.0",
+    "jest-canvas-mock": "^2.1.0",
+    "jest-localstorage-mock": "^2.4.0",
+    "jest-serializer-vue": "^2.0.2",
     "jsdom": "^15.1.1",
     "mocha": "^6.2.0",
-    "nyc": "^14.1.1"
+    "nyc": "^14.1.1",
+    "sinon": "^7.4.1",
+    "vue": "^2.6.10",
+    "vue-i18n": "^7.8.0",
+    "vue-jest": "^3.0.4",
+    "vue-loader": "^13.3.0",
+    "vue-template-compiler": "^2.6.10"
   },
   "dependencies": {
     "@babel/runtime": "^7.5.5",
