@@ -2,6 +2,7 @@ import Deposit from '../component/deposit.vue';
 import VueI18n from 'vue-i18n';
 import Vuex from "vuex";
 import { mount, createLocalVue } from '@vue/test-utils';
+import fingateInstance from "@/src/deposit/instance";
 const sinon = require("sinon");
 const sandbox = sinon.createSandbox();
 const localVue = createLocalVue();
@@ -62,51 +63,51 @@ describe('Deposit', () => {
     describe("test tokens", function() {
       it("check token contract", function() {
         expect(vm.ethTokens).toEqual({
-          ETH: {
+          JETH: {
             contract: "0x0000000000000000000000000000000000000000"
           },
-          MOAC: {
+          JMOAC: {
             contract: "0xCBcE61316759D807c474441952cE41985bBC5a40"
           },
-          JCC: {
+          JJCC: {
             contract: "0x9BD4810a407812042F938d2f69f673843301cfa6"
           },
-          EOS: {
+          JEOS: {
             contract: "0x86Fa049857E0209aa7D9e616F7eb3b3B78ECfdb0"
           },
-          CALL: {
+          JCALL: {
             contract: "0xcE3D828Bdb96d7c6C20Ecbfd63e572dc1C8AbD32"
           },
-          EKT: {
+          JEKT: {
             contract: "0xBAb165dF9455AA0F2AeD1f2565520B91DDadB4c8"
           },
-          DABT: {
+          JDABT: {
             contract: "0x1C6890825880566dd6Ad88147E0a6acE7930b7c0"
           },
-          BIZ: {
+          JBIZ: {
             contract: "0x399f9A95305114efAcB91d1d6C02CBe234dD36aF"
           },
-          SLASH: {
+          JSLASH: {
             contract: "0xE222e2e3517f5AF5e3abc667adF14320C848D6dA"
           },
-          GSGC: {
+          JGSGC: {
             contract: "0x0ec2a5ec6a976d6d4c101fb647595c9d8d21779e"
           },
-          USDT: {
+          JUSDT: {
             contract: "0xdAC17F958D2ee523a2206206994597C13D831ec7"
           },
-          HT: {
+          JHT: {
             contract: "0x6f259637dcd74c767781e37bc6133cd6a68aa161"
           }
         })
         expect(vm.moacTokens).toEqual({
-          SNRC: {
+          JSNRC: {
             contract: "0x1b9bae18532eeb8cd4316a20678a0c43f28f0ae2"
           },
-          CKM: {
+          JCKM: {
             contract: "0x4d206d18fd036423aa74815511904a2a40e25fb1"
           },
-          FST: {
+          JFST: {
             contract: "0x4c6007cea426e543551f2cb6392e6d6768f74706"
           }
         })
@@ -126,12 +127,14 @@ describe('Deposit', () => {
     })
 
     describe("test depositCall api", function() {
+      const Fingate = require('jcc-call-utils').CallFingate;
       const secret = testConfig.testCallSecret;
       const address = testConfig.testCallAddress;
       vm.initData("jcall");
 
       afterEach(() => {
         sandbox.restore();
+        fingateInstance.destroy();
       });
 
       it("depositCall shoude be a function", function() {
@@ -139,13 +142,13 @@ describe('Deposit', () => {
       });
 
       it("reject error if deposit amount is greater than balance", async function() {
-        const stub = sandbox.stub(vm.callFingateInstance, "getCallBalance");
+        const stub = sandbox.stub(Fingate.prototype, "getCallBalance");
         stub.resolves("0");
-        const stub1 = sandbox.stub(vm.callFingateInstance, "connect");
+        const stub1 = sandbox.stub(Fingate.prototype, "connect");
         stub1.resolves();
         const spy = sandbox.spy(vm, "changeLoadingState");
-        const spy1 = sandbox.spy(vm.callFingateInstance, "transfer");
-        const spy2 = sandbox.spy(vm.callFingateInstance, "disconnect");
+        const spy1 = sandbox.spy(Fingate.prototype, "transfer");
+        const spy2 = sandbox.spy(Fingate.prototype, "disconnect");
         try {
           await vm.depositCall(secret, address, amount, memo);
         } catch (error) {
@@ -161,11 +164,11 @@ describe('Deposit', () => {
       });
 
       it("reject error if deposit failed", async function() {
-        const stub = sandbox.stub(vm.callFingateInstance, "getCallBalance");
+        const stub = sandbox.stub(Fingate.prototype, "getCallBalance");
         stub.resolves("1");
-        const stub1 = sandbox.stub(vm.callFingateInstance, "connect");
+        const stub1 = sandbox.stub(Fingate.prototype, "connect");
         stub1.resolves();
-        const stub2 = sandbox.stub(vm.callFingateInstance, "transfer");
+        const stub2 = sandbox.stub(Fingate.prototype, "transfer");
         stub2.rejects();
         const spy = sandbox.spy(vm, "changeLoadingState");
         try {
@@ -180,11 +183,11 @@ describe('Deposit', () => {
       });
 
       it("resolve hash if deposit success", async function() {
-        const stub = sandbox.stub(vm.callFingateInstance, "getCallBalance");
+        const stub = sandbox.stub(Fingate.prototype, "getCallBalance");
         stub.resolves("1");
-        const stub1 = sandbox.stub(vm.callFingateInstance, "connect");
+        const stub1 = sandbox.stub(Fingate.prototype, "connect");
         stub1.resolves();
-        const stub2 = sandbox.stub(vm.callFingateInstance, "transfer");
+        const stub2 = sandbox.stub(Fingate.prototype, "transfer");
         stub2.resolves(testConfig.testHash);
         const spy = sandbox.spy(vm, "changeLoadingState");
         let hash;
@@ -202,6 +205,7 @@ describe('Deposit', () => {
     })
 
     describe("test depositRipple api", function() {
+      const Fingate = require('jcc-ripple-utils').RippleFingate;
       const secret = testConfig.testRippleSecret;
       const address = testConfig.testRippleAddress;
       wrapper.setData({ coin: "jxrp" })
@@ -209,6 +213,7 @@ describe('Deposit', () => {
 
       afterEach(() => {
         sandbox.restore();
+        fingateInstance.destroy();
       });
 
       it("depositRipple shoude be a function", function() {
@@ -216,13 +221,14 @@ describe('Deposit', () => {
       })
 
       it("reject error if deposit amount is greater than balance", async function() {
-        const stub = sandbox.stub(vm.rippleFingateInstance, "getXrpBalance");
+
+        const stub = sandbox.stub(Fingate.prototype, "getXrpBalance");
         stub.resolves("0");
-        const stub1 = sandbox.stub(vm.rippleFingateInstance, "connect");
+        const stub1 = sandbox.stub(Fingate.prototype, "connect");
         stub1.resolves();
         const spy = sandbox.spy(vm, "changeLoadingState");
-        const spy1 = sandbox.spy(vm.rippleFingateInstance, "transfer");
-        const spy2 = sandbox.spy(vm.rippleFingateInstance, "disconnect");
+        const spy1 = sandbox.spy(Fingate.prototype, "transfer");
+        const spy2 = sandbox.spy(Fingate.prototype, "disconnect");
         try {
           await vm.depositRipple(secret, address, amount, memo);
         } catch (error) {
@@ -238,13 +244,13 @@ describe('Deposit', () => {
       });
 
       it("reject error if the balance is less than the sum of amount and limit", async function() {
-        const stub = sandbox.stub(vm.rippleFingateInstance, "getXrpBalance");
+        const stub = sandbox.stub(Fingate.prototype, "getXrpBalance");
         stub.resolves("21.099999999999999999");
-        const stub1 = sandbox.stub(vm.rippleFingateInstance, "connect");
+        const stub1 = sandbox.stub(Fingate.prototype, "connect");
         stub1.resolves();
         const spy = sandbox.spy(vm, "changeLoadingState");
-        const spy1 = sandbox.spy(vm.rippleFingateInstance, "transfer");
-        const spy2 = sandbox.spy(vm.rippleFingateInstance, "disconnect");
+        const spy1 = sandbox.spy(Fingate.prototype, "transfer");
+        const spy2 = sandbox.spy(Fingate.prototype, "disconnect");
         try {
           await vm.depositRipple(secret, address, amount, memo);
         } catch (error) {
@@ -260,11 +266,11 @@ describe('Deposit', () => {
       });
 
       it("reject error if deposit failed", async function() {
-        const stub = sandbox.stub(vm.rippleFingateInstance, "getXrpBalance");
+        const stub = sandbox.stub(Fingate.prototype, "getXrpBalance");
         stub.resolves("25");
-        const stub1 = sandbox.stub(vm.rippleFingateInstance, "connect");
+        const stub1 = sandbox.stub(Fingate.prototype, "connect");
         stub1.resolves();
-        const stub2 = sandbox.stub(vm.rippleFingateInstance, "transfer");
+        const stub2 = sandbox.stub(Fingate.prototype, "transfer");
         stub2.rejects();
         const spy = sandbox.spy(vm, "changeLoadingState");
         try {
@@ -279,11 +285,11 @@ describe('Deposit', () => {
       });
 
       it("resolve hash if deposit success", async function() {
-        const stub = sandbox.stub(vm.rippleFingateInstance, "getXrpBalance");
+        const stub = sandbox.stub(Fingate.prototype, "getXrpBalance");
         stub.resolves("21.1");
-        const stub1 = sandbox.stub(vm.rippleFingateInstance, "connect");
+        const stub1 = sandbox.stub(Fingate.prototype, "connect");
         stub1.resolves();
-        const stub2 = sandbox.stub(vm.rippleFingateInstance, "transfer");
+        const stub2 = sandbox.stub(Fingate.prototype, "transfer");
         stub2.resolves(testConfig.testHash);
         const spy = sandbox.spy(vm, "changeLoadingState");
         let hash;
@@ -301,6 +307,7 @@ describe('Deposit', () => {
     })
 
     describe("test depositBizain api", function() {
+      const Fingate = require('jcc-bizain-utils').BizainFingate;
       const secret = testConfig.testBizainSecret;
       const address = testConfig.testBizainAddress;
       wrapper.setData({ coin: "jbiz" })
@@ -308,6 +315,7 @@ describe('Deposit', () => {
 
       afterEach(() => {
         sandbox.restore();
+        fingateInstance.destroy();
       });
 
       it("depositBizain shoude be a function", function() {
@@ -315,13 +323,13 @@ describe('Deposit', () => {
       })
 
       it("reject error if deposit amount is greater than balance", async function() {
-        const stub = sandbox.stub(vm.bizInstance, "balanceOf");
+        const stub = sandbox.stub(Fingate.prototype, "balanceOf");
         stub.resolves("0");
-        const stub1 = sandbox.stub(vm.bizInstance, "connect");
+        const stub1 = sandbox.stub(Fingate.prototype, "connect");
         stub1.resolves();
-        const stub2 = sandbox.stub(vm.bizInstance, "disconnect");
+        const stub2 = sandbox.stub(Fingate.prototype, "disconnect");
         const spy = sandbox.spy(vm, "changeLoadingState");
-        const spy1 = sandbox.spy(vm.bizInstance, "transfer");
+        const spy1 = sandbox.spy(Fingate.prototype, "transfer");
 
         try {
           await vm.depositBizain(secret, address, amount, memo);
@@ -338,13 +346,13 @@ describe('Deposit', () => {
       });
 
       it("reject error if deposit failed", async function() {
-        const stub = sandbox.stub(vm.bizInstance, "balanceOf");
+        const stub = sandbox.stub(Fingate.prototype, "balanceOf");
         stub.resolves("1");
-        const stub1 = sandbox.stub(vm.bizInstance, "connect");
+        const stub1 = sandbox.stub(Fingate.prototype, "connect");
         stub1.resolves();
-        const stub2 = sandbox.stub(vm.bizInstance, "transfer");
+        const stub2 = sandbox.stub(Fingate.prototype, "transfer");
         stub2.rejects();
-        sandbox.stub(vm.bizInstance, "disconnect");
+        sandbox.stub(Fingate.prototype, "disconnect");
         const spy = sandbox.spy(vm, "changeLoadingState");
         try {
           await vm.depositBizain(secret, address, amount, memo);
@@ -358,13 +366,13 @@ describe('Deposit', () => {
       });
 
       it("resolve hash if deposit success", async function() {
-        const stub = sandbox.stub(vm.bizInstance, "balanceOf");
+        const stub = sandbox.stub(Fingate.prototype, "balanceOf");
         stub.resolves("1");
-        const stub1 = sandbox.stub(vm.bizInstance, "connect");
+        const stub1 = sandbox.stub(Fingate.prototype, "connect");
         stub1.resolves();
-        const stub2 = sandbox.stub(vm.bizInstance, "transfer");
+        const stub2 = sandbox.stub(Fingate.prototype, "transfer");
         stub2.resolves(testConfig.testHash);
-        sandbox.stub(vm.bizInstance, "disconnect");
+        sandbox.stub(Fingate.prototype, "disconnect");
         const spy = sandbox.spy(vm, "changeLoadingState");
         let hash;
         try {
@@ -381,6 +389,7 @@ describe('Deposit', () => {
     })
 
     describe("test depositStream api", function() {
+      const Fingate = require('jcc-stream-utils').StreamFingate;
       const secret = testConfig.testStreamSecret;
       const address = testConfig.testStreamAddress;
       wrapper.setData({ coin: "jstm" })
@@ -388,6 +397,7 @@ describe('Deposit', () => {
 
       afterEach(() => {
         sandbox.restore();
+        fingateInstance.destroy();
       });
 
       it("depositStream shoude be a function", function() {
@@ -395,12 +405,12 @@ describe('Deposit', () => {
       })
 
       it("reject error if deposit amount is greater than balance", async function() {
-        const stub = sandbox.stub(vm.stmFingateInstance, "getBalance");
+        const stub = sandbox.stub(Fingate.prototype, "getBalance");
         stub.resolves("0");
-        const stub1 = sandbox.stub(vm.stmFingateInstance, "connect");
+        const stub1 = sandbox.stub(Fingate.prototype, "connect");
         const spy = sandbox.spy(vm, "changeLoadingState");
-        const spy1 = sandbox.spy(vm.stmFingateInstance, "transfer");
-        const spy2 = sandbox.spy(vm.stmFingateInstance, "disconnect");
+        const spy1 = sandbox.spy(Fingate.prototype, "transfer");
+        const spy2 = sandbox.spy(Fingate.prototype, "disconnect");
         try {
           await vm.depositStream(secret, address, amount, memo);
         } catch (error) {
@@ -416,10 +426,10 @@ describe('Deposit', () => {
       });
 
       it("reject error if deposit failed", async function() {
-        sandbox.stub(vm.stmFingateInstance, "connect");
-        const stub = sandbox.stub(vm.stmFingateInstance, "getBalance");
+        sandbox.stub(Fingate.prototype, "connect");
+        const stub = sandbox.stub(Fingate.prototype, "getBalance");
         stub.resolves("1");
-        const stub1 = sandbox.stub(vm.stmFingateInstance, "transfer");
+        const stub1 = sandbox.stub(Fingate.prototype, "transfer");
         stub1.rejects();
         const spy = sandbox.spy(vm, "changeLoadingState");
         try {
@@ -434,10 +444,10 @@ describe('Deposit', () => {
       });
 
       it("resolve hash if deposit success", async function() {
-        sandbox.stub(vm.stmFingateInstance, "connect");
-        const stub = sandbox.stub(vm.stmFingateInstance, "getBalance");
+        sandbox.stub(Fingate.prototype, "connect");
+        const stub = sandbox.stub(Fingate.prototype, "getBalance");
         stub.resolves("1");
-        const stub1 = sandbox.stub(vm.stmFingateInstance, "transfer");
+        const stub1 = sandbox.stub(Fingate.prototype, "transfer");
         stub1.resolves(testConfig.testHash);
         const spy = sandbox.spy(vm, "changeLoadingState");
         let hash;
@@ -481,6 +491,7 @@ describe('Deposit', () => {
 
       afterEach(() => {
         sandbox.restore();
+        fingateInstance.destroy();
       });
 
       it("depositEthereum shoude be a function", function() {
@@ -753,6 +764,7 @@ describe('Deposit', () => {
 
       afterEach(() => {
         sandbox.restore();
+        fingateInstance.destroy();
       });
 
       it("depositMoac shoude be a function", function() {
