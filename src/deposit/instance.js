@@ -1,30 +1,27 @@
 const fingateInstance = (() => {
   let obj = {};
-  const getModule = (libName) => {
-    return new Promise((resolve, reject) => {
-      import(libName).then(lib => {
-        return resolve(lib);
-      })
-    })
-  }
 
   const init = (chain) => {
-    return new Promise(async (resolve, reject) => {
-      try {
-        if (chain === "call" && !obj.callFingateInstance) {
-          const m = await getModule("jcc-call-utils");
+    return new Promise((resolve, reject) => {
+      if (chain === "call" && !obj.callFingateInstance) {
+        import("jcc-call-utils").then(m => {
           const CallFingate = m.CallFingate;
           const callFingateInstance = new CallFingate("wss://s1.callchain.live:5020");
           obj = { callFingateInstance }
-        } else if (chain === "ripple" && !obj.rippleFingateInstance) {
-          const m = await getModule("jcc-ripple-utils");
+          return resolve(obj);
+        })
+      } else if (chain === "ripple" && !obj.rippleFingateInstance) {
+        import("jcc-ripple-utils").then(m => {
           const RippleFingate = m.RippleFingate;
           const rippleFingateInstance = new RippleFingate('wss://s1.ripple.com');
           obj = {
             rippleFingateInstance
           }
-        } else if (chain === "stream" && !obj.stmFingateInstance) {
-          const m = await getModule("jcc-stream-utils");
+          return resolve(obj);
+        })
+
+      } else if (chain === "stream" && !obj.stmFingateInstance) {
+        import("jcc-stream-utils").then(m => {
           const StreamFingate = m.StreamFingate;
           const stmFingateInstance = new StreamFingate({
             host: 'nodew.labs.stream',
@@ -35,29 +32,31 @@ const fingateInstance = (() => {
           obj = {
             stmFingateInstance
           }
-        } else if (chain === "bizain" && !obj.bizainFingateInstance) {
-          const m = await getModule("jcc-bizain-utils");
+          return resolve(obj);
+        })
+
+      } else if (chain === "bizain" && !obj.bizainFingateInstance) {
+        import("jcc-bizain-utils").then(m => {
           const BizainFingate = m.BizainFingate;
           const bizainFingateInstance = new BizainFingate('wss://bizain.net/bc/ws');
           bizainFingateInstance.init();
           obj = {
             bizainFingateInstance
           }
-        }
+          return resolve(obj);
+        })
+      } else {
         return resolve(obj);
-      } catch (error) {
-        /* istanbul ignore next */
-        return reject(error);
       }
+
     })
   }
 
   const initWithContract = (chain, node, scAddress, contract) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       /* istanbul ignore else */
       if (chain === "moac") {
-        try {
-          const m = await getModule("jcc-moac-utils");
+        import("jcc-moac-utils").then(m => {
           if (!obj.moacInstance) {
             const Moac = m.Moac;
             const Fingate = m.Fingate;
@@ -91,13 +90,9 @@ const fingateInstance = (() => {
             obj.moacERC20Instance = moacERC20Instance;
           }
           return resolve(obj);
-        } catch (error) {
-          /* istanbul ignore next */
-          return reject(error);
-        }
+        })
       } else if (chain === "ethereum") {
-        try {
-          const m = await getModule("jcc-ethereum-utils");
+        import("jcc-ethereum-utils").then(m => {
           if (!obj.ethereumInstance) {
             const Ethereum = m.Ethereum;
             const Fingate = m.Fingate;
@@ -131,10 +126,7 @@ const fingateInstance = (() => {
             obj.ethereumERC20Instance = ethereumERC20Instance;
           }
           return resolve(obj);
-        } catch (error) {
-          /* istanbul ignore next */
-          return reject(error);
-        }
+        })
       }
     })
   }
