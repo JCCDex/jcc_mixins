@@ -8,8 +8,8 @@
   "main": "lib/index.js",
   "scripts": {
     "deploy": "./publish.sh",
-    "test": "jest --config test/unit/jest.conf.js",
-    "coveralls": "nyc report --reporter=text-lcov | coveralls"
+    "test": "gulp && jest --config test/unit/jest.conf.js --coverage",
+    "coveralls": "cat test/unit/coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",

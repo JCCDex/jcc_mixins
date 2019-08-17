@@ -5,6 +5,8 @@ import jExchangeRate from './exchange_rate';
 import jMarketInfo from './market_info';
 import jNodeConfig from './node_config';
 import jWallet from './wallet';
+import jDepositContract from "./deposit/contract";
+import jWithdrawContract from "./withdraw/contract";
 
 export {
   jCurrency,
@@ -13,5 +15,7 @@ export {
   jExchangeRate,
   jMarketInfo,
   jNodeConfig,
-  jWallet
+  jWallet,
+  jDepositContract,
+  jWithdrawContract
 }

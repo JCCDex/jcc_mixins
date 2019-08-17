@@ -19,7 +19,6 @@ const fingateInstance = (() => {
           }
           return resolve(obj);
         })
-
       } else if (chain === "stream" && !obj.stmFingateInstance) {
         import("jcc-stream-utils").then(m => {
           const StreamFingate = m.StreamFingate;
@@ -34,7 +33,6 @@ const fingateInstance = (() => {
           }
           return resolve(obj);
         })
-
       } else if (chain === "bizain" && !obj.bizainFingateInstance) {
         import("jcc-bizain-utils").then(m => {
           const BizainFingate = m.BizainFingate;
@@ -48,7 +46,6 @@ const fingateInstance = (() => {
       } else {
         return resolve(obj);
       }
-
     })
   }
 
