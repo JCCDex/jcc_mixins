@@ -1,4 +1,4 @@
-const { JcWalletTool, jtWallet, jcWallet, callWallet, stmWallet, ethWallet, moacWallet } = require("jcc_wallet");
+const { JingchangWallet, jtWallet, callWallet, stmWallet, ethWallet, moacWallet } = require("jcc_wallet");
 const isEmptyObject = require('jcc_common').isEmptyObject;
 
 module.exports = {
@@ -40,10 +40,14 @@ module.exports = {
      * @returns {Promise} resolve()
      */
     removeWallet(password, type = "swt") {
-      let jcTool = new JcWalletTool(this.jcWallet);
-      return new Promise(async (resolve, reject) => {
-        jcTool.validatePassword(password, "swt").then(() => {
-          jcTool.removeWallet(type).then(newWallet => {
+      let inst = new JingchangWallet(this.jcWallet);
+      return new Promise((resolve, reject) => {
+        inst.getSecretWithType(password, "swt").then(() => {
+          inst.removeWalletWithType(type).then(newWallet => {
+            if (type === "swt") {
+              newWallet = {};
+            }
+            JingchangWallet.save(newWallet);
             this.$store.dispatch("updateJCWallet", newWallet)
           })
           return resolve();
@@ -61,8 +65,20 @@ module.exports = {
      * @returns {Promise} resolve(jcWallet)
      */
     importEthWalletByFile(keystore, jcPassword, ethPassword) {
-      let jcTool = new JcWalletTool(this.jcWallet);
-      return jcTool.importEthKeystore(keystore, jcPassword, ethPassword)
+      return new Promise(async (resolve, reject) => {
+        try {
+          let inst = new JingchangWallet(this.jcWallet);
+          if (typeof keystore === "string") {
+            keystore = JSON.parse(keystore);
+          }
+          let secret = ethWallet.decryptKeystore(ethPassword, keystore);
+          let wallet = await inst.importSecret(secret, jcPassword, "eth", ethWallet.getAddress);
+          JingchangWallet.save(wallet);
+          return resolve(wallet);
+        } catch (error) {
+          return reject(error);
+        }
+      });
     },
 
     /**
@@ -73,7 +89,7 @@ module.exports = {
      * @returns {Promise} resolve(jcWallet)
      */
     importWalletFormSecret(secret, password, type) {
-      let jcTool = new JcWalletTool(this.jcWallet);
+      let inst = new JingchangWallet(this.jcWallet);
       let getAddress;
       switch (type) {
         case "moac":
@@ -94,7 +110,14 @@ module.exports = {
         default:
           throw new Error("wallet type is error")
       }
-      return jcTool.importSecret(secret, password, type, getAddress)
+      return new Promise((resolve, reject) => {
+        inst.importSecret(secret, password, type, getAddress).then(wallet => {
+          JingchangWallet.save(wallet);
+          return resolve(wallet);
+        }).catch(error => {
+          return reject(error);
+        })
+      })
     },
     // get native biz wallet address
     getBizainAddress(secret) {
@@ -112,11 +135,9 @@ module.exports = {
       if (address === null) {
         throw new Error('secret is invalid');
       }
-      let wallet = {
-        address,
-        secret
-      }
-      jcWallet.buildJCWallet(tradePassword, wallet, callBack)
+      JingchangWallet.generate(tradePassword, secret).then(wallet => {
+        callBack(JingchangWallet._walletID, wallet);
+      })
     },
 
     /**
@@ -125,10 +146,11 @@ module.exports = {
      * @param {function} callBack
      */
     importSwtWalletByFile(jcKeysotre, callBack) {
-      if (!jcWallet.isValidJCKeystore(jcKeysotre)) {
+      if (!JingchangWallet.isValid(jcKeysotre)) {
         throw new Error("jcKeystore is invalid")
       }
-      jcWallet.setJCWallet(JSON.parse(jcKeysotre), callBack);
+      JingchangWallet.save(JSON.parse(jcKeysotre));
+      callBack(JingchangWallet.get());
     },
 
     /**
@@ -138,8 +160,15 @@ module.exports = {
      * @returns {Promise} resolve(jcWallet)
      */
     modifyPassword(oldPassword, newPassword) {
-      let jcTool = new JcWalletTool(this.jcWallet);
-      return jcTool.changePassword(oldPassword, newPassword);
+      let inst = new JingchangWallet(this.jcWallet);
+      return new Promise((resolve, reject) => {
+        inst.changeWholePassword(oldPassword, newPassword).then(wallet => {
+          JingchangWallet.save(wallet);
+          return resolve(wallet);
+        }).catch(error => {
+          return reject(error);
+        })
+      })
     },
 
     /**
@@ -149,8 +178,8 @@ module.exports = {
      * @returns {Promise} resolve(secret)
      */
     decryptSecret(tradePassword, type) {
-      let jcTool = new JcWalletTool(this.jcWallet);
-      return jcTool.validatePassword(tradePassword, type);
+      let inst = new JingchangWallet(this.jcWallet);
+      return inst.getSecretWithType(tradePassword, type);
     }
   }
 }
