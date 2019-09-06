@@ -53,7 +53,7 @@ export default {
           contract: "0xcE3D828Bdb96d7c6C20Ecbfd63e572dc1C8AbD32"
         },
         JEKT: {
-          contract: "0xBAb165dF9455AA0F2AeD1f2565520B91DDadB4c8"
+          contract: "0x4ecdb6385f3db3847f9c4a9bf3f9917bb27a5452"
         },
         JDABT: {
           contract: "0x1C6890825880566dd6Ad88147E0a6acE7930b7c0"
