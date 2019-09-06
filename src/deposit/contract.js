@@ -72,6 +72,9 @@ export default {
         },
         JHT: {
           contract: "0x6f259637dcd74c767781e37bc6133cd6a68aa161"
+        },
+        JGN: {
+          contract: "0x364b810aCBad792b8eEac401c7d4E5E001B92b67"
         }
       }
     }
