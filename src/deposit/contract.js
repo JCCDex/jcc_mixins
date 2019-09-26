@@ -34,6 +34,9 @@ export default {
         },
         JFST: {
           contract: "0x4c6007cea426e543551f2cb6392e6d6768f74706"
+        },
+        JPG: {
+          contract: "0x8bbea7dbb25e4f0006d77e00083808e7eb0d45e8"
         }
       },
       ethTokens: {
@@ -274,7 +277,7 @@ export default {
     depositEthereum(secret, address, amount, memo) {
       return new Promise(async (resolve, reject) => {
         const scAddress = "0x3907acb4c1818adf72d965c08e0a79af16e7ffb8";
-        const minLimit = 0.1;
+        const minLimit = 0.02;
         this.changeLoadingState(this.$t("message.deposit.request_balance", { name: "ETH" }));
         const instance = await fingateInstance.initWithContract("ethereum", this.getEthHost(), scAddress)
         const { ethereumInstance, ethereumFingateInstance } = instance;
