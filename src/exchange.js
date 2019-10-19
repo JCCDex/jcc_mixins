@@ -105,7 +105,7 @@ module.exports = {
         let port = this.exPort;
         let https = this.https;
         JCCExchange.init(hosts, port, https);
-        JCCExchange.createOrder(address, secret, amount, base, counter, sum, type, issuer).then(hash => {
+        JCCExchange.createOrder(address, secret, amount, base, counter, sum, type, "jDXCeSHSpZ9LiX6ihckWaYDeDt5hFrdTto", issuer).then(hash => {
           return resolve(hash);
         }).catch(err => {
           return reject(err);
