@@ -103,7 +103,7 @@ module.exports = {
         let sum = this.sum;
         let hosts = this.exHosts;
         let port = this.exPort;
-        let platform = process.env.platform || "jDXCeSHSpZ9LiX6ihckWaYDeDt5hFrdTto";
+        let platform = this.$store.getters.platform || "jDXCeSHSpZ9LiX6ihckWaYDeDt5hFrdTto";
         let https = this.https;
         JCCExchange.init(hosts, port, https);
         JCCExchange.createOrder(address, secret, amount, base, counter, sum, type, platform, issuer).then(hash => {
