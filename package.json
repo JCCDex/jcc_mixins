@@ -64,7 +64,7 @@
     "jcc-bizain-utils": "^0.1.4",
     "jcc-call-utils": "^0.1.2",
     "jcc-ethereum-utils": "^0.1.4",
-    "jcc-moac-utils": "^0.1.8",
+    "jcc-moac-utils": "^0.2.3",
     "jcc-ripple-utils": "^0.1.2",
     "jcc-stream-utils": "^0.1.3",
     "jcc_common": "^0.1.0",

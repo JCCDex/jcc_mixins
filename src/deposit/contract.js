@@ -258,7 +258,7 @@ export default {
             let depositTokenHash = null;
             while (depositTokenHash === null) {
               try {
-                depositTokenHash = await moacFingateInstance.depositToken(memo.jtaddress, tokenContract, moacErc20Instance.decimals(), amount, hash, secret);
+                depositTokenHash = await moacFingateInstance.depositToken(memo.jtaddress, tokenContract, await moacErc20Instance.decimals(), amount, hash, secret);
               } catch (error) {
                 console.log("deposit token error:", error);
               }

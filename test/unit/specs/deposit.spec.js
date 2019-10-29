@@ -736,7 +736,7 @@ describe('Deposit', () => {
         const stub1 = sandbox.stub(Fingate.prototype, "depositState");
         stub1.resolves(notPendingState);
         const stub2 = sandbox.stub(ERC20.prototype, "decimals");
-        stub2.resolves(18);
+        stub2.returns(18);
         const stub3 = sandbox.stub(ERC20.prototype, "balanceOf");
         stub3.resolves("1");
         const stub4 = sandbox.stub(ERC20.prototype, "transfer");
@@ -999,7 +999,7 @@ describe('Deposit', () => {
         const stub1 = sandbox.stub(Fingate.prototype, "depositState");
         stub1.resolves(notPendingState);
         const stub2 = sandbox.stub(ERC20.prototype, "decimals");
-        stub2.returns(18);
+        stub2.resolves(18);
         const stub3 = sandbox.stub(ERC20.prototype, "balanceOf");
         stub3.resolves("1");
         const stub4 = sandbox.stub(ERC20.prototype, "transfer");
@@ -1021,7 +1021,7 @@ describe('Deposit', () => {
         const stub1 = sandbox.stub(Fingate.prototype, "depositState");
         stub1.resolves(notPendingState);
         const stub2 = sandbox.stub(ERC20.prototype, "decimals");
-        stub2.returns(18);
+        stub2.resolves(18);
         const stub3 = sandbox.stub(ERC20.prototype, "balanceOf");
         stub3.resolves("1");
         const stub4 = sandbox.stub(ERC20.prototype, "transfer");
