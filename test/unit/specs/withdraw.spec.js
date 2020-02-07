@@ -44,10 +44,10 @@ describe('Withdraw', () => {
       }
     },
     computed: {
-      exHosts() {
-        return ["ejedwdjbbl8jgf.jccdex.cn"];
+      jcNodes() {
+        return ["https://srhkinfo43qw2.weidex.vip"];
       },
-      exPort() {
+      nodePort() {
         return 443;
       },
       https() {

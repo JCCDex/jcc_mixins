@@ -27,6 +27,12 @@ module.exports = {
       }
       return this.hosts.cfgHosts.length > 0 ? this.hosts.cfgHosts : process.env.cfgHosts
     },
+    jcNodes() {
+      if (process.env.proxy) {
+        return [];
+      }
+      return this.hosts.jcNodes.length > 0 ? this.hosts.jcNodes : process.env.jcNodes
+    },
     https() {
       return process.env.NODE_ENV === 'production'
     },
@@ -41,6 +47,9 @@ module.exports = {
     },
     cfgPort() {
       return this.https ? 443 : process.env.cfgPort
+    },
+    nodePort() {
+      return this.https ? 443 : process.env.nodePort
     }
   }
 }

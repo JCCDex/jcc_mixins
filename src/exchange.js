@@ -101,10 +101,10 @@ module.exports = {
         let type = this.type === 0 ? "buy" : "sell";
         let amount = this.form.amount;
         let sum = this.sum;
-        let hosts = this.exHosts;
-        let port = this.exPort;
+        let hosts = this.jcNodes;
+        let port = this.nodePort;
         let platform = this.$store.getters.platform || "jDXCeSHSpZ9LiX6ihckWaYDeDt5hFrdTto";
-        let https = this.https;
+        let https = true;
         JCCExchange.init(hosts, port, https);
         JCCExchange.createOrder(address, secret, amount, base, counter, sum, type, platform, issuer).then(hash => {
           return resolve(hash);
