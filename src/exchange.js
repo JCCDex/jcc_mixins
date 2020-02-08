@@ -102,10 +102,8 @@ module.exports = {
         let amount = this.form.amount;
         let sum = this.sum;
         let hosts = this.jcNodes;
-        let port = this.nodePort;
         let platform = this.$store.getters.platform || "jDXCeSHSpZ9LiX6ihckWaYDeDt5hFrdTto";
-        let https = true;
-        JCCExchange.init(hosts, port, https);
+        JCCExchange.init(hosts);
         JCCExchange.createOrder(address, secret, amount, base, counter, sum, type, platform, issuer).then(hash => {
           return resolve(hash);
         }).catch(err => {
