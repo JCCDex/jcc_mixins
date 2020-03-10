@@ -47,9 +47,6 @@ module.exports = {
     },
     cfgPort() {
       return this.https ? 443 : process.env.cfgPort
-    },
-    nodePort() {
-      return this.https ? 443 : process.env.nodePort
     }
   }
 }

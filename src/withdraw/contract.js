@@ -33,7 +33,7 @@ export default {
     async transfer(payment) {
       const { address, secret, to, amount, issuer, currency, memo } = payment;
       try {
-        JCCExchange.init(this.jcNodes, this.nodePort, true);
+        JCCExchange.init(this.jcNodes);
         const hash = await JCCExchange.transfer(address, secret, amount, memo, to, currency, issuer);
         console.log("payment hash: ", hash);
         return hash;

@@ -47,12 +47,6 @@ describe('Withdraw', () => {
       jcNodes() {
         return ["https://srhkinfo43qw2.weidex.vip"];
       },
-      nodePort() {
-        return 443;
-      },
-      https() {
-        return true;
-      },
       eth_moac_gas() {
         return "1";
       },
