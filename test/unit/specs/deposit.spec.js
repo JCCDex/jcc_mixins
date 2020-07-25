@@ -101,6 +101,9 @@ describe('Deposit', () => {
           },
           JGN: {
             contract: "0x364b810aCBad792b8eEac401c7d4E5E001B92b67"
+          },
+          JTPT: {
+            contract: "0x4161725d019690a3e0de50f6be67b07a86a9fae1"
           }
         })
         expect(vm.moacTokens).toEqual({
@@ -533,7 +536,7 @@ describe('Deposit', () => {
 
       it("deposit eth: reject error if the balance is less than the sum of amount and limit", async function() {
         const stub = sandbox.stub(Ethereum.prototype, "getBalance");
-        stub.resolves("1.01999999999999");
+        stub.resolves("1.02999999999999");
         const spy = sandbox.spy(vm, "changeLoadingState");
         const spy1 = sandbox.spy(Fingate.prototype, "depositState");
         const spy2 = sandbox.spy(Fingate.prototype, "deposit");
@@ -547,13 +550,13 @@ describe('Deposit', () => {
           expect(spy2.called).toBe(false);
           expect(spy3.called).toBe(false);
           expect(spy4.called).toBe(false);
-          expect(error.message).toBe("充币前请确保以太钱包保留0.02ETH（智能合约银关处理门槛，实际消耗gas会按照当前网络实况）");
+          expect(error.message).toBe("充币前请确保以太钱包保留0.03ETH（智能合约银关处理门槛，实际消耗gas会按照当前网络实况）");
         }
       });
 
       it("deposit eth: reject error if has pending order", async function() {
         const stub = sandbox.stub(Ethereum.prototype, "getBalance");
-        stub.resolves("1.02");
+        stub.resolves("1.03");
         const stub1 = sandbox.stub(Fingate.prototype, "depositState");
         stub1.resolves(pendingOrder);
         const spy = sandbox.spy(vm, "changeLoadingState");
@@ -574,7 +577,7 @@ describe('Deposit', () => {
 
       it("deposit eth: reject error if deposit failed", async function() {
         const stub = sandbox.stub(Ethereum.prototype, "getBalance");
-        stub.resolves("1.02");
+        stub.resolves("1.03");
         const stub1 = sandbox.stub(Fingate.prototype, "depositState");
         stub1.resolves(notPendingState);
         const stub2 = sandbox.stub(Fingate.prototype, "deposit");
@@ -593,7 +596,7 @@ describe('Deposit', () => {
 
       it("deposit eth: resolve hash if deposit success", async function() {
         const stub = sandbox.stub(Ethereum.prototype, "getBalance");
-        stub.resolves("1.02");
+        stub.resolves("1.03");
         const stub1 = sandbox.stub(Fingate.prototype, "depositState");
         stub1.resolves(notPendingState);
         const stub2 = sandbox.stub(Fingate.prototype, "deposit");
@@ -616,7 +619,7 @@ describe('Deposit', () => {
         wrapper.setData({ coin: "jjcc" })
         wrapper.setProps({ coin: 'jjcc' });
         const stub = sandbox.stub(Ethereum.prototype, "getBalance");
-        stub.resolves("0.0199999999999");
+        stub.resolves("0.0299999999999");
         const spy = sandbox.spy(vm, "changeLoadingState");
         const spy1 = sandbox.spy(Fingate.prototype, "depositState");
         const spy2 = sandbox.spy(Fingate.prototype, "deposit");
@@ -633,7 +636,7 @@ describe('Deposit', () => {
           expect(spy3.called).toBe(false);
           expect(spy4.called).toBe(false);
           expect(stub.calledOnceWithExactly(address)).toBe(true);
-          expect(error.message).toBe("充币前请确保以太钱包保留0.02ETH（智能合约银关处理门槛，实际消耗gas会按照当前网络实况）");
+          expect(error.message).toBe("充币前请确保以太钱包保留0.03ETH（智能合约银关处理门槛，实际消耗gas会按照当前网络实况）");
         }
       });
 
@@ -645,7 +648,7 @@ describe('Deposit', () => {
         const spy4 = sandbox.spy(Fingate.prototype, "deposit");
         const spy5 = sandbox.spy(ERC20.prototype, "init");
         const stub = sandbox.stub(Ethereum.prototype, "getBalance");
-        stub.resolves("0.02");
+        stub.resolves("0.03");
         const stub1 = sandbox.stub(Fingate.prototype, "depositState");
         stub1.resolves(pendingOrder);
         try {
@@ -669,7 +672,7 @@ describe('Deposit', () => {
         const spy2 = sandbox.spy(ERC20.prototype, "transfer");
         const spy3 = sandbox.spy(Fingate.prototype, "deposit");
         const stub = sandbox.stub(Ethereum.prototype, "getBalance");
-        stub.resolves("0.02");
+        stub.resolves("0.03");
         const stub1 = sandbox.stub(Fingate.prototype, "depositState");
         stub1.resolves(notPendingState);
         const stub2 = sandbox.stub(ERC20.prototype, "balanceOf");
@@ -689,7 +692,7 @@ describe('Deposit', () => {
       it("deposit erc20: reject error if transfer failed", async function() {
         const spy = sandbox.spy(Fingate.prototype, "depositToken");
         const stub = sandbox.stub(Ethereum.prototype, "getBalance");
-        stub.resolves("0.02");
+        stub.resolves("0.03");
         const stub1 = sandbox.stub(Fingate.prototype, "depositState");
         stub1.resolves(notPendingState);
         const stub2 = sandbox.stub(ERC20.prototype, "decimals");
@@ -710,7 +713,7 @@ describe('Deposit', () => {
 
       it("deposit erc20: resolve hash if depositToken first success and depositToken should be called only once", async function() {
         const stub = sandbox.stub(Ethereum.prototype, "getBalance");
-        stub.resolves("0.02");
+        stub.resolves("0.03");
         const stub1 = sandbox.stub(Fingate.prototype, "depositState");
         stub1.resolves(notPendingState);
         const stub2 = sandbox.stub(ERC20.prototype, "decimals");
@@ -732,7 +735,7 @@ describe('Deposit', () => {
 
       it("deposit erc20: resolve hash if depositToken first failed and second success and depositToken should be called twice", async function() {
         const stub = sandbox.stub(Ethereum.prototype, "getBalance");
-        stub.resolves("0.02");
+        stub.resolves("0.03");
         const stub1 = sandbox.stub(Fingate.prototype, "depositState");
         stub1.resolves(notPendingState);
         const stub2 = sandbox.stub(ERC20.prototype, "decimals");
