@@ -6,7 +6,7 @@
     "transfering_gas": "燃料费扣取中"
   },
   "deposit": {
-    "eth_limit": "充币前请确保以太钱包保留0.02ETH（智能合约银关处理门槛，实际消耗gas会按照当前网络实况）",
+    "eth_limit": "充币前请确保以太钱包保留0.03ETH（智能合约银关处理门槛，实际消耗gas会按照当前网络实况）",
     "failed": "充币失败，可能网络拥堵或余额不足，请稍后再试！",
     "moac_limit": "充币前请确保墨客钱包保留0.1MOAC（智能合约银关处理门槛，实际消耗gas会按照当前网络实况）",
     "more_than_available_balance": "余额：{balance}，请检查是否足够！",

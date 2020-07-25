@@ -78,6 +78,9 @@ export default {
         },
         JGN: {
           contract: "0x364b810aCBad792b8eEac401c7d4E5E001B92b67"
+        },
+        JTPT: {
+          contract: "0x4161725d019690a3e0de50f6be67b07a86a9fae1"
         }
       }
     }
@@ -277,7 +280,7 @@ export default {
     depositEthereum(secret, address, amount, memo) {
       return new Promise(async (resolve, reject) => {
         const scAddress = "0x3907acb4c1818adf72d965c08e0a79af16e7ffb8";
-        const minLimit = 0.02;
+        const minLimit = 0.03;
         this.changeLoadingState(this.$t("message.deposit.request_balance", { name: "ETH" }));
         const instance = await fingateInstance.initWithContract("ethereum", this.getEthHost(), scAddress)
         const { ethereumInstance, ethereumFingateInstance } = instance;
