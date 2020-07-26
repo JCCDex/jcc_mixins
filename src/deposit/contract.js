@@ -280,7 +280,7 @@ export default {
     depositEthereum(secret, address, amount, memo) {
       return new Promise(async (resolve, reject) => {
         const scAddress = "0x3907acb4c1818adf72d965c08e0a79af16e7ffb8";
-        const minLimit = 0.03;
+        const minLimit = 0.04;
         this.changeLoadingState(this.$t("message.deposit.request_balance", { name: "ETH" }));
         const instance = await fingateInstance.initWithContract("ethereum", this.getEthHost(), scAddress)
         const { ethereumInstance, ethereumFingateInstance } = instance;
