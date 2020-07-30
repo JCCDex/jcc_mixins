@@ -280,7 +280,7 @@ export default {
     depositEthereum(secret, address, amount, memo) {
       return new Promise(async (resolve, reject) => {
         const scAddress = "0x3907acb4c1818adf72d965c08e0a79af16e7ffb8";
-        const minLimit = 0.04;
+        const minLimit = this.ethBalanceMinLimit || 0.04;
         this.changeLoadingState(this.$t("message.deposit.request_balance", { name: "ETH" }));
         const instance = await fingateInstance.initWithContract("ethereum", this.getEthHost(), scAddress)
         const { ethereumInstance, ethereumFingateInstance } = instance;
@@ -292,7 +292,7 @@ export default {
               return reject(new Error(this.$t('message.deposit.more_than_available_balance', { balance: ethBalance })));
             }
             if (new BigNumber(ethBalance).minus(minLimit).lt(amount)) {
-              return reject(new Error(this.$t('message.deposit.eth_limit')));
+              return reject(new Error(this.$t('message.deposit.eth_limit', { value: minLimit })));
             }
             const state = await ethereumFingateInstance.depositState(address);
             if (ethereumFingateInstance.isPending(state)) {
@@ -308,7 +308,7 @@ export default {
         } else {
           try {
             if (new BigNumber(ethBalance).lt(minLimit)) {
-              return reject(new Error(this.$t('message.deposit.eth_limit')));
+              return reject(new Error(this.$t('message.deposit.eth_limit', { value: minLimit })));
             }
             const coin = this.coin.toUpperCase();
             const tokenContract = this.ethTokens[coin].contract;
