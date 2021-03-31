@@ -61,15 +61,15 @@
   "dependencies": {
     "@babel/runtime": "^7.10.5",
     "bignumber.js": "^9.0.0",
-    "jcc-bizain-utils": "^0.1.4",
-    "jcc-call-utils": "^0.1.2",
-    "jcc-ethereum-utils": "^0.2.3",
-    "jcc-moac-utils": "^0.3.8",
-    "jcc-ripple-utils": "^0.1.2",
-    "jcc-stream-utils": "^0.1.3",
     "jcc_common": "^0.1.0",
     "jcc_exchange": "^3.1.15",
     "jcc_wallet": "^1.0.5",
+    "jcc-bizain-utils": "^0.1.4",
+    "jcc-call-utils": "^0.1.2",
+    "jcc-ethereum-utils": "^0.2.6",
+    "jcc-moac-utils": "^0.3.8",
+    "jcc-ripple-utils": "^0.1.2",
+    "jcc-stream-utils": "^0.1.3",
     "lodash": "^4.17.19",
     "stm-lib": "0.0.2"
   }

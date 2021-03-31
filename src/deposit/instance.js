@@ -93,7 +93,7 @@ const fingateInstance = (() => {
           if (!obj.ethereumInstance) {
             const Ethereum = m.Ethereum;
             const Fingate = m.Fingate;
-            const ethereumInstance = new Ethereum(node, true);
+            const ethereumInstance = new Ethereum(node);
             ethereumInstance.initWeb3();
             const ethereumFingateInstance = new Fingate();
             ethereumFingateInstance.init(scAddress, ethereumInstance);
