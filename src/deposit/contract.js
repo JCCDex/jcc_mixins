@@ -61,9 +61,6 @@ export default {
         JDABT: {
           contract: "0x1C6890825880566dd6Ad88147E0a6acE7930b7c0"
         },
-        JBIZ: {
-          contract: "0x399f9A95305114efAcB91d1d6C02CBe234dD36aF"
-        },
         JSLASH: {
           contract: "0xE222e2e3517f5AF5e3abc667adF14320C848D6dA"
         },
@@ -101,29 +98,6 @@ export default {
       let ethHosts = this.$store.getters.hosts.moacHosts;
       let host = getMoacHost(ethHosts);
       return host;
-    },
-    depositBizain(secret, address, amount, memo) {
-      return new Promise(async (resolve, reject) => {
-        const destination = "bwtC9ARd3wo7Kx3gKQ49uVgcKxoAiV1iM2";
-        let bizInstance;
-        try {
-          this.changeLoadingState(this.$t("message.deposit.request_balance", { name: "BIZ" }));
-          const instance = await fingateInstance.init("bizain");
-          bizInstance = instance.bizainFingateInstance;
-          await bizInstance.connect();
-          const balance = await bizInstance.balanceOf(address);
-          if (new BigNumber(amount).gt(balance)) {
-            return reject(new Error(this.$t('message.deposit.more_than_available_balance', { balance })));
-          }
-          this.changeLoadingState(this.$t("message.deposit.request_balance_success"));
-          const hash = await bizInstance.transfer(secret, destination, amount, memo);
-          return resolve(hash);
-        } catch (error) {
-          return reject(new Error(this.$t('message.deposit.failed')));
-        } finally {
-          bizInstance.disconnect();
-        }
-      });
     },
     depositRipple(secret, address, amount, memo) {
       return new Promise(async (resolve, reject) => {

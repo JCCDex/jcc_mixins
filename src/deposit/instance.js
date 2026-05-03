@@ -19,16 +19,6 @@ const fingateInstance = (() => {
           }
           return resolve(obj);
         })
-      } else if (chain === "bizain" && !obj.bizainFingateInstance) {
-        import("jcc-bizain-utils").then(m => {
-          const BizainFingate = m.BizainFingate;
-          const bizainFingateInstance = new BizainFingate('wss://bizain.net/bc/ws');
-          bizainFingateInstance.init();
-          obj = {
-            bizainFingateInstance
-          }
-          return resolve(obj);
-        })
       } else {
         return resolve(obj);
       }

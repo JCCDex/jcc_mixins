@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/JCCDex/jcc_mixins/badge.svg?branch=master)](https://coveralls.io/github/JCCDex/jcc_mixins?branch=master)
 [![npm version](https://badge.fury.io/js/jcc_mixins.svg)](https://badge.fury.io/js/jcc_mixins)
 
-Vue 2 mixin library for the JCC (井畅) cross-chain exchange platform. Provides reusable mixins for wallet management, trading, market data display, and cross-chain deposits/withdrawals across Ethereum, MOAC, Ripple, Bizain, and CALL networks.
+Vue 2 mixin library for the JCC (井畅) cross-chain exchange platform. Provides reusable mixins for wallet management, trading, market data display, and cross-chain deposits/withdrawals across Ethereum, MOAC, Ripple, and CALL networks.
 
 ---
 
@@ -33,14 +33,12 @@ Your Vuex store **must** expose the following getters:
 | `callAddress` | `String` | User's CALL address |
 | `swtAddress` | `String` | User's SWT/JCC address |
 | `moacAddress` | `String` | User's MOAC address |
-| `bizAddress` | `String` | User's Bizain address |
 | `secretTemp` | `Object` | Temporary secret cache `{ timeStamp, secret }` |
 
 #### `hosts` object shape
 
 ```js
 {
-  bizHosts:  ['node1.example.com'],  // Bizain API hosts
   exHosts:   ['ex.example.com'],     // Exchange API hosts
   infoHosts: ['info.example.com'],   // Market info hosts
   cfgHosts:  ['cfg.example.com'],    // Config API hosts
@@ -74,8 +72,8 @@ Your Vuex store **must** expose the following getters:
 | `proxy` | `Boolean` | When `true`, returns empty arrays for all host getters (use with dev proxy) |
 | `ethHosts` | `Array` | Fallback Ethereum hosts when store is empty |
 | `moacHosts` | `Array` | Fallback MOAC hosts when store is empty |
-| `bizHosts` / `exHosts` / `infoHosts` / `cfgHosts` / `jcNodes` | `Array` | Fallback node hosts |
-| `bizPort` / `exPort` / `infoPort` / `cfgPort` | `Number` | Service ports (non-production only; production uses 443) |
+| `exHosts` / `infoHosts` / `cfgHosts` / `jcNodes` | `Array` | Fallback node hosts |
+| `exPort` / `infoPort` / `cfgPort` | `Number` | Service ports (non-production only; production uses 443) |
 
 ---
 
@@ -119,13 +117,12 @@ Resolves API node hosts and ports from the Vuex store, with `process.env` fallba
 
 | Computed | Returns | Description |
 |----------|---------|-------------|
-| `bizHosts` | `Array` | Bizain service hosts |
 | `exHosts` | `Array` | Exchange service hosts |
 | `infoHosts` | `Array` | Market info service hosts |
 | `cfgHosts` | `Array` | Config service hosts |
 | `jcNodes` | `Array` | JCC ledger node hosts |
 | `https` | `Boolean` | `true` in production |
-| `bizPort` / `exPort` / `infoPort` / `cfgPort` | `Number` | `443` in production, else from `process.env` |
+| `exPort` / `infoPort` / `cfgPort` | `Number` | `443` in production, else from `process.env` |
 
 ---
 
@@ -207,13 +204,13 @@ Multi-chain wallet management via `jcc_wallet`'s `JingchangWallet`.
 |----------|---------|-------------|
 | `jcWallet` | `Object` | Full JingchangWallet keystore |
 | `wallets` | `Array` | Wallet entries inside the keystore |
-| `ethAddress` / `callAddress` / `swtAddress` / `moacAddress` / `bizAddress` | `String` | Chain-specific addresses from store |
+| `ethAddress` / `callAddress` / `swtAddress` / `moacAddress` | `String` | Chain-specific addresses from store |
 
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
 | `removeWallet` | `(password, type?)` | `Promise<void>` | Removes a wallet entry; `type` defaults to `'swt'` which removes all wallets |
 | `importEthWalletByFile` | `(keystore, jcPassword, ethPassword)` | `Promise<Object>` | Imports ETH wallet from a keystore JSON file |
-| `importWalletFormSecret` | `(secret, password, type)` | `Promise<Object>` | Imports a wallet from a raw secret for `eth`/`call`/`moac`/`biz` |
+| `importWalletFormSecret` | `(secret, password, type)` | `Promise<Object>` | Imports a wallet from a raw secret for `eth`/`call`/`moac` |
 | `importSwtWalletFormSecret` | `(secret, tradePassword, callBack)` | `void` | Imports/replaces SWT wallet from secret |
 | `importSwtWalletByFile` | `(jcKeystore, callBack)` | `void` | Imports SWT wallet from a Weidex keystore file |
 | `modifyPassword` | `(oldPassword, newPassword)` | `Promise<Object>` | Changes master trade password for all wallets |
@@ -229,7 +226,6 @@ Handles cross-chain deposits **into** the JCC platform. Requires `changeLoadingS
 
 | Method | Signature | Returns | Description |
 |--------|-----------|---------|-------------|
-| `depositBizain` | `(secret, address, amount, memo)` | `Promise<String>` | Deposit BIZ tokens from Bizain chain |
 | `depositRipple` | `(secret, address, amount, memo)` | `Promise<String>` | Deposit XRP; requires ≥20.1 XRP reserve remain |
 | `depositCall` | `(secret, address, amount, memo)` | `Promise<String>` | Deposit CALL tokens |
 | `depositMoac` | `(secret, address, amount, memo)` | `Promise<String>` | Deposit JMOAC or MOAC ERC-20 tokens |
@@ -248,7 +244,6 @@ Handles cross-chain withdrawals **out of** the JCC platform. Depends on `jNodeCo
 | `serializePayment` | `(secret, to, amount, token, memo, issuer?)` | `Object` | Builds a payment data object |
 | `transfer` | `(payment)` | `Promise<String>` | Submits a JCC ledger transfer; returns transaction hash |
 | `withdrawCall` | `(swtSecret, callAddress, token, amount)` | `Promise<String>` | Withdraw to CALL chain |
-| `withdrawBizain` | `(swtSecret, bizAddress, token, amount)` | `Promise<String>` | Withdraw to Bizain chain |
 | `withdrawRipple` | `(swtSecret, rippleAddress, token, amount)` | `Promise<String>` | Withdraw to Ripple/XRP |
 | `withdrawMoac` | `(swtSecret, moacAddress, token, amount)` | `Promise<String>` | Withdraw JMOAC or MOAC ERC-20 (pays gas automatically) |
 | `withdrawEthereum` | `(swtSecret, ethereumAddress, token, amount)` | `Promise<String>` | Withdraw JETH or ETH ERC-20 (pays gas automatically) |

@@ -18,9 +18,6 @@ module.exports = {
     moacAddress() {
       return this.$store.getters.moacAddress;
     },
-    bizAddress() {
-      return this.$store.getters.bizAddress;
-    },
     wallets() {
       if (isEmptyObject(this.jcWallet)) {
         return []
@@ -33,7 +30,7 @@ module.exports = {
      * remove wallet and clear cache according to type
      * Attention: if type is 'swt' or none, all wallets will be deleted.
      * @param {string} password trade password
-     * @param {string} type  'swt/'eth'/'call'/'moac'/'biz'
+     * @param {string} type  'swt/'eth'/'call'/'moac'
      * @returns {Promise} resolve()
      */
     removeWallet(password, type = "swt") {
@@ -84,7 +81,7 @@ module.exports = {
      * add or modify wallets by secret except swt's Wallet
      * @param {string} secret
      * @param {string} password trade password
-     * @param {string} type 'eth'/'call'/'moac'/'biz'
+     * @param {string} type 'eth'/'call'/'moac'
      * @returns {Promise} resolve(jcWallet)
      */
     importWalletFormSecret(secret, password, type) {
@@ -100,9 +97,6 @@ module.exports = {
         case "eth":
           getAddress = ethWallet.getAddress;
           break;
-        case "biz":
-          getAddress = this.getBizainAddress;
-          break;
         default:
           throw new Error("wallet type is error")
       }
@@ -114,10 +108,6 @@ module.exports = {
           return reject(error);
         })
       })
-    },
-    // get native biz wallet address
-    getBizainAddress(secret) {
-      return jtWallet.getAddress(secret, 'bwt')
     },
 
     /**
@@ -170,7 +160,7 @@ module.exports = {
     /**
      * decrypt and show Secret of some one wallet, if the trade password is valid
      * @param {string} tradePassword
-     * @param {string} type 'swt'/'eth'/'call'/'moac'/'biz'
+     * @param {string} type 'swt'/'eth'/'call'/'moac'
      * @returns {Promise} resolve(secret)
      */
     decryptSecret(tradePassword, type) {

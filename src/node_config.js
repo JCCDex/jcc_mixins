@@ -3,12 +3,6 @@ module.exports = {
     hosts() {
       return this.$store.getters.hosts
     },
-    bizHosts() {
-      if (process.env.proxy) {
-        return [];
-      }
-      return this.hosts.bizHosts.length > 0 ? this.hosts.bizHosts : process.env.bizHosts
-    },
     exHosts() {
       if (process.env.proxy) {
         return [];
@@ -35,9 +29,6 @@ module.exports = {
     },
     https() {
       return process.env.NODE_ENV === 'production'
-    },
-    bizPort() {
-      return this.https ? 443 : process.env.bizPort
     },
     exPort() {
       return this.https ? 443 : process.env.exPort

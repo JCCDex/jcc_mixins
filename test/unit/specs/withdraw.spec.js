@@ -118,60 +118,6 @@ describe('Withdraw', () => {
     });
   });
 
-  describe("test withdrawBizain api", function() {
-
-    const to = "jDu7umDxKxeaHoj7eNdUn8YsGWTHZSuEGL";
-    const address = testConfig.testBizainAddress;
-    const token = "jbiz";
-
-    const memo = {
-      biz_wallet: address,
-      value: amount,
-      chain: "BIZ"
-    }
-
-    afterEach(() => {
-      sandbox.restore();
-    });
-
-    it("withdrawBizain should be a function", function() {
-      expect(typeof vm.withdrawBizain).toBe("function");
-    });
-
-    it("reject error if withdraw failed", async function() {
-      const stub = sandbox.stub(jccExchange, "transfer");
-      stub.rejects();
-      try {
-        await vm.withdrawBizain(swtSecret, address, token, amount);
-      } catch (error) {
-        expect(error.message).toBe("提币失败，请稍后再试！");
-      }
-    });
-
-    it("resolve hash if withdraw success", async function() {
-      const spy = sandbox.spy(vm, "serializePayment");
-      const spy1 = sandbox.spy(vm, "transfer");
-      const stub = sandbox.stub(jccExchange, "transfer");
-      stub.resolves(testConfig.testHash);
-      let hash;
-      try {
-        hash = await vm.withdrawBizain(swtSecret, address, token, amount);
-      } finally {
-        expect(spy.calledOnceWithExactly(swtSecret, to, amount, token, memo)).toBe(true);
-        expect(spy1.calledOnceWithExactly({
-          address: swtAddress,
-          secret: swtSecret,
-          to,
-          amount,
-          issuer: "jGa9J9TkqtBcUoHe2zqhVFFbgUVED6o9or",
-          currency: token.toUpperCase(),
-          memo: JSON.stringify(memo)
-        })).toBe(true);
-        expect(hash).toBe(testConfig.testHash);
-      }
-    });
-  });
-
   describe("test withdrawRipple api", function() {
 
     const to = "jQs5cAcZrKmyWSQgkmUtXsdeFMzwSYcBA4";
@@ -455,7 +401,7 @@ describe('Withdraw', () => {
       });
     });
 
-    it("withdraw erc20 which isn't biz: resolve hash if withdraw success", function(done) {
+    it("withdraw erc20: resolve hash if withdraw success", function(done) {
       wrapper.setData({
         mockEth: "1"
       });
@@ -486,52 +432,6 @@ describe('Withdraw', () => {
           issuer: "jGa9J9TkqtBcUoHe2zqhVFFbgUVED6o9or",
           currency: "JJCC",
           memo: JSON.stringify(memo)
-        })).toBe(true);
-        expect(spy2.getCall(1).calledWithExactly({
-          address: swtAddress,
-          secret: swtSecret,
-          to,
-          amount,
-          issuer: "jGa9J9TkqtBcUoHe2zqhVFFbgUVED6o9or",
-          currency: token.toUpperCase(),
-          memo: JSON.stringify(gasMemo)
-        })).toBe(true);
-        expect(hash).toBe(testConfig.testHash);
-        done();
-      });
-    });
-
-    it("withdraw erc20 which is biz: resolve hash if withdraw success", function(done) {
-      wrapper.setData({
-        mockEth: "1"
-      });
-      const stub = sandbox.stub(jccExchange, "transfer");
-      stub.onFirstCall().resolves(testConfig.testHash);
-      stub.onSecondCall().resolves("123456");
-      const spy = sandbox.spy(vm, "changeLoadingState");
-      const spy1 = sandbox.spy(vm, "payGas");
-      const spy2 = sandbox.spy(vm, "transfer");
-      const gasMemo = {
-        eth_wallet: address,
-        value: amount,
-        relate: testConfig.testHash
-      }
-      vm.withdrawEthereum(swtSecret, address, "jbiz", amount).then(hash => {
-        const args = spy.args;
-        expect(spy.calledTwice).toBe(true);
-        expect(args[0][0]).toBe("获取转账hash");
-        expect(args[1][0]).toBe("燃料费扣取中");
-        expect(spy1.calledOnceWithExactly(swtSecret, to, "1", token, gasMemo)).toBe(true);
-        expect(stub.calledTwice).toBe(true);
-        expect(spy2.calledTwice).toBe(true);
-        expect(spy2.getCall(0).calledWithExactly({
-          address: swtAddress,
-          secret: swtSecret,
-          to,
-          amount,
-          issuer: "jGa9J9TkqtBcUoHe2zqhVFFbgUVED6o9or",
-          currency: "JBIZ",
-          memo: JSON.stringify(Object.assign({}, memo, { chain: "ETH" }))
         })).toBe(true);
         expect(spy2.getCall(1).calledWithExactly({
           address: swtAddress,

@@ -84,9 +84,6 @@ describe('Deposit', () => {
           JDABT: {
             contract: "0x1C6890825880566dd6Ad88147E0a6acE7930b7c0"
           },
-          JBIZ: {
-            contract: "0x399f9A95305114efAcB91d1d6C02CBe234dD36aF"
-          },
           JSLASH: {
             contract: "0xE222e2e3517f5AF5e3abc667adF14320C848D6dA"
           },
@@ -309,88 +306,6 @@ describe('Deposit', () => {
           expect(stub2.calledOnceWithExactly(secret, "rMUpPikgdhmtCida2zf4CMBLrBREfCeYcy", amount, memo)).toBe(true);
           expect(spy.calledTwice).toBe(true);
           expect(args[0][0]).toBe("获取XRP钱包余额");
-          expect(args[1][0]).toBe("获取余额成功，转账中");
-          expect(hash).toBe(testConfig.testHash);
-        }
-      });
-    })
-
-    describe("test depositBizain api", function() {
-      const Fingate = require('jcc-bizain-utils').BizainFingate;
-      const secret = testConfig.testBizainSecret;
-      const address = testConfig.testBizainAddress;
-      wrapper.setData({ coin: "jbiz" })
-      vm.init("jbiz");
-
-      afterEach(() => {
-        sandbox.restore();
-        fingateInstance.destroy();
-      });
-
-      it("depositBizain shoude be a function", function() {
-        expect(typeof vm.depositBizain).toBe("function");
-      })
-
-      it("reject error if deposit amount is greater than balance", async function() {
-        const stub = sandbox.stub(Fingate.prototype, "balanceOf");
-        stub.resolves("0");
-        const stub1 = sandbox.stub(Fingate.prototype, "connect");
-        stub1.resolves();
-        const stub2 = sandbox.stub(Fingate.prototype, "disconnect");
-        const spy = sandbox.spy(vm, "changeLoadingState");
-        const spy1 = sandbox.spy(Fingate.prototype, "transfer");
-
-        try {
-          await vm.depositBizain(secret, address, amount, memo);
-        } catch (error) {
-          const args = spy.args;
-          expect(stub.calledOnceWithExactly(address)).toBe(true);
-          expect(stub1.calledOnce).toBe(true);
-          expect(stub2.called).toBe(true);
-          expect(spy.calledOnce).toBe(true);
-          expect(spy1.called).toBe(false);
-          expect(args[0][0]).toBe("获取BIZ钱包余额");
-          expect(error.message).toBe("余额：0，请检查是否足够！");
-        }
-      });
-
-      it("reject error if deposit failed", async function() {
-        const stub = sandbox.stub(Fingate.prototype, "balanceOf");
-        stub.resolves("1");
-        const stub1 = sandbox.stub(Fingate.prototype, "connect");
-        stub1.resolves();
-        const stub2 = sandbox.stub(Fingate.prototype, "transfer");
-        stub2.rejects();
-        sandbox.stub(Fingate.prototype, "disconnect");
-        const spy = sandbox.spy(vm, "changeLoadingState");
-        try {
-          await vm.depositBizain(secret, address, amount, memo);
-        } catch (error) {
-          const args = spy.args;
-          expect(spy.calledTwice).toBe(true);
-          expect(args[0][0]).toBe("获取BIZ钱包余额");
-          expect(args[1][0]).toBe("获取余额成功，转账中");
-          expect(error.message).toBe("充币失败，可能网络拥堵或余额不足，请稍后再试！");
-        }
-      });
-
-      it("resolve hash if deposit success", async function() {
-        const stub = sandbox.stub(Fingate.prototype, "balanceOf");
-        stub.resolves("1");
-        const stub1 = sandbox.stub(Fingate.prototype, "connect");
-        stub1.resolves();
-        const stub2 = sandbox.stub(Fingate.prototype, "transfer");
-        stub2.resolves(testConfig.testHash);
-        sandbox.stub(Fingate.prototype, "disconnect");
-        const spy = sandbox.spy(vm, "changeLoadingState");
-        let hash;
-        try {
-          hash = await vm.depositBizain(secret, address, amount, memo);
-        } finally {
-          const args = spy.args;
-          expect(stub2.calledOnceWithExactly(secret, "bwtC9ARd3wo7Kx3gKQ49uVgcKxoAiV1iM2", amount, memo)).toBe(true);
-          expect(spy.calledTwice).toBe(true);
-          expect(args[0][0]).toBe("获取BIZ钱包余额");
           expect(args[1][0]).toBe("获取余额成功，转账中");
           expect(hash).toBe(testConfig.testHash);
         }

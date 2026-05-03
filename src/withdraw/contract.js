@@ -50,17 +50,6 @@ export default {
       const hash = await this.transfer(data);
       return hash;
     },
-    async withdrawBizain(swtSecret, bizAddress, token, amount) {
-      const memo = {
-        biz_wallet: bizAddress,
-        value: amount,
-        chain: "BIZ"
-      };
-      const to = "jDu7umDxKxeaHoj7eNdUn8YsGWTHZSuEGL";
-      const data = this.serializePayment(swtSecret, to, amount, token, memo);
-      const hash = await this.transfer(data);
-      return hash;
-    },
     async withdrawRipple(swtSecret, rippleAddress, token, amount) {
       const memo = {
         xrp_wallet: rippleAddress,
@@ -130,9 +119,6 @@ export default {
           eth_wallet: ethereumAddress,
           value: amount
         };
-        if (token.toLowerCase() === "jbiz") {
-          memo.chain = "ETH";
-        }
         const to = "jsk45ksJZUB7durZrLt5e86Eu2gtiXNRN4";
         const data = this.serializePayment(swtSecret, to, amount, token, memo);
 

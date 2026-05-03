@@ -18,8 +18,6 @@ if (typeof global.TextDecoder === 'undefined') {
 global.Uint8Array = Buffer.__proto__; // eslint-disable-line no-proto
 
 process.env.depositCALL = true;
-process.env.depositSTM = true;
-process.env.depositBIZ = true;
 process.env.depositXRP = true;
 process.env.NODE_ENV = "TESTING"
 global["Window"] = undefined
