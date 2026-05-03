@@ -65,59 +65,6 @@ describe('Withdraw', () => {
   const swtSecret = testConfig.testSwtSecret;
   const swtAddress = testConfig.testSwtAddress;
 
-  describe("test withdrawStream api", function() {
-
-    const to = "japp9xxt2VHpRwHsoa76GWoQj1VdsjcZQJ";
-    const address = testConfig.testStreamAddress;
-    const token = "jstm";
-
-    const memo = {
-      stm_wallet: address,
-      value: amount
-    }
-
-    afterEach(() => {
-      sandbox.restore();
-    });
-
-    it("withdrawStream should be a function", function() {
-      expect(typeof vm.withdrawStream).toBe("function");
-    });
-
-    it("reject error if withdraw failed", async function() {
-      const stub = sandbox.stub(jccExchange, "transfer");
-      stub.rejects();
-      try {
-        await vm.withdrawStream(swtSecret, address, token, amount);
-      } catch (error) {
-        expect(error.message).toBe("提币失败，请稍后再试！");
-      }
-    });
-
-    it("resolve hash if withdraw success", async function() {
-      const spy = sandbox.spy(vm, "serializePayment");
-      const spy1 = sandbox.spy(vm, "transfer");
-      const stub = sandbox.stub(jccExchange, "transfer");
-      stub.resolves(testConfig.testHash);
-      let hash;
-      try {
-        hash = await vm.withdrawStream(swtSecret, address, token, amount);
-      } finally {
-        expect(spy.calledOnceWithExactly(swtSecret, to, amount, token, memo)).toBe(true);
-        expect(spy1.calledOnceWithExactly({
-          address: swtAddress,
-          secret: swtSecret,
-          to,
-          amount,
-          issuer: "jGa9J9TkqtBcUoHe2zqhVFFbgUVED6o9or",
-          currency: token.toUpperCase(),
-          memo: JSON.stringify(memo)
-        })).toBe(true);
-        expect(hash).toBe(testConfig.testHash);
-      }
-    });
-  });
-
   describe("test withdrawCall api", function() {
 
     const to = "jMCJrXRmycsT5tsVuge7Y65v9MrQi9r11E";

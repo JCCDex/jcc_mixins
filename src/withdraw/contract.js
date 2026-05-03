@@ -35,22 +35,10 @@ export default {
       try {
         JCCExchange.init(this.jcNodes);
         const hash = await JCCExchange.transfer(address, secret, amount, memo, to, currency, issuer);
-        console.log("payment hash: ", hash);
         return hash;
       } catch (error) {
-        console.log("payment error: ", error);
         throw new Error(this.$t("message.withdraw.failed"));
       }
-    },
-    async withdrawStream(swtSecret, stmAddress, token, amount) {
-      const memo = {
-        stm_wallet: stmAddress,
-        value: amount
-      };
-      const to = "japp9xxt2VHpRwHsoa76GWoQj1VdsjcZQJ";
-      const data = this.serializePayment(swtSecret, to, amount, token, memo);
-      const hash = await this.transfer(data);
-      return hash;
     },
     async withdrawCall(swtSecret, callAddress, token, amount) {
       const memo = {
@@ -188,7 +176,7 @@ export default {
         try {
           gasHash = await this.transfer(gasData);
         } catch (error) {
-          console.log("transfer gas error:", error);
+          // retry on next iteration
         } finally {
           count = count + 1;
         }

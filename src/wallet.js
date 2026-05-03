@@ -1,4 +1,4 @@
-const { JingchangWallet, jtWallet, callWallet, stmWallet, ethWallet, moacWallet } = require("jcc_wallet");
+const { JingchangWallet, jtWallet, callWallet, ethWallet, moacWallet } = require("jcc_wallet");
 const isEmptyObject = require('jcc_common').isEmptyObject;
 
 module.exports = {
@@ -8,9 +8,6 @@ module.exports = {
     },
     ethAddress() {
       return this.$store.getters.ethAddress;
-    },
-    stmAddress() {
-      return this.$store.getters.stmAddress;
     },
     callAddress() {
       return this.$store.getters.callAddress;
@@ -36,7 +33,7 @@ module.exports = {
      * remove wallet and clear cache according to type
      * Attention: if type is 'swt' or none, all wallets will be deleted.
      * @param {string} password trade password
-     * @param {string} type  'swt/'eth'/'stm'/'call'/'moac'/'biz'
+     * @param {string} type  'swt/'eth'/'call'/'moac'/'biz'
      * @returns {Promise} resolve()
      */
     removeWallet(password, type = "swt") {
@@ -48,9 +45,11 @@ module.exports = {
               newWallet = {};
             }
             JingchangWallet.save(newWallet);
-            this.$store.dispatch("updateJCWallet", newWallet)
-          })
-          return resolve();
+            this.$store.dispatch("updateJCWallet", newWallet);
+            return resolve();
+          }).catch(error => {
+            return reject(error);
+          });
         }).catch(error => {
           return reject(error);
         });
@@ -85,7 +84,7 @@ module.exports = {
      * add or modify wallets by secret except swt's Wallet
      * @param {string} secret
      * @param {string} password trade password
-     * @param {string} type 'eth'/'stm'/'call'/'moac'/'biz'
+     * @param {string} type 'eth'/'call'/'moac'/'biz'
      * @returns {Promise} resolve(jcWallet)
      */
     importWalletFormSecret(secret, password, type) {
@@ -94,9 +93,6 @@ module.exports = {
       switch (type) {
         case "moac":
           getAddress = moacWallet.getAddress;
-          break;
-        case "stm":
-          getAddress = stmWallet.getAddress;
           break;
         case "call":
           getAddress = callWallet.getAddress;
@@ -174,7 +170,7 @@ module.exports = {
     /**
      * decrypt and show Secret of some one wallet, if the trade password is valid
      * @param {string} tradePassword
-     * @param {string} type 'swt'/'eth'/'call'/'stm'/'moac'/'biz'
+     * @param {string} type 'swt'/'eth'/'call'/'moac'/'biz'
      * @returns {Promise} resolve(secret)
      */
     decryptSecret(tradePassword, type) {

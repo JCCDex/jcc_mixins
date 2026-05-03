@@ -19,20 +19,6 @@ const fingateInstance = (() => {
           }
           return resolve(obj);
         })
-      } else if (chain === "stream" && !obj.stmFingateInstance) {
-        import("jcc-stream-utils").then(m => {
-          const StreamFingate = m.StreamFingate;
-          const stmFingateInstance = new StreamFingate({
-            host: 'nodew.labs.stream',
-            port: 443,
-            secure: true
-          });
-          stmFingateInstance.init();
-          obj = {
-            stmFingateInstance
-          }
-          return resolve(obj);
-        })
       } else if (chain === "bizain" && !obj.bizainFingateInstance) {
         import("jcc-bizain-utils").then(m => {
           const BizainFingate = m.BizainFingate;

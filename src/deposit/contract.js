@@ -102,31 +102,6 @@ export default {
       let host = getMoacHost(ethHosts);
       return host;
     },
-    depositStream(secret, address, amount, memo) {
-      return new Promise(async (resolve, reject) => {
-        const destination = "vn4K541zh3vNHHJJaos2Poc4z3RiMHLHcK";
-        let stmFingateInstance
-        try {
-          this.changeLoadingState(this.$t("message.deposit.request_balance", { name: "STM" }));
-          const instance = await fingateInstance.init("stream");
-          stmFingateInstance = instance.stmFingateInstance;
-          stmFingateInstance.connect();
-          const balance = await stmFingateInstance.getBalance(address);
-          console.log('stream balance:', balance);
-          if (new BigNumber(amount).gt(balance)) {
-            return reject(new Error(this.$t('message.deposit.more_than_available_balance', { balance })));
-          }
-          this.changeLoadingState(this.$t("message.deposit.request_balance_success"));
-          const hash = await stmFingateInstance.transfer(secret, destination, amount, memo);
-          return resolve(hash);
-        } catch (error) {
-          console.log("deposit stream error:", error);
-          return reject(new Error(this.$t('message.deposit.failed')));
-        } finally {
-          stmFingateInstance.disconnect();
-        }
-      })
-    },
     depositBizain(secret, address, amount, memo) {
       return new Promise(async (resolve, reject) => {
         const destination = "bwtC9ARd3wo7Kx3gKQ49uVgcKxoAiV1iM2";
@@ -137,7 +112,6 @@ export default {
           bizInstance = instance.bizainFingateInstance;
           await bizInstance.connect();
           const balance = await bizInstance.balanceOf(address);
-          console.log('bizain balance:', balance);
           if (new BigNumber(amount).gt(balance)) {
             return reject(new Error(this.$t('message.deposit.more_than_available_balance', { balance })));
           }
@@ -145,7 +119,6 @@ export default {
           const hash = await bizInstance.transfer(secret, destination, amount, memo);
           return resolve(hash);
         } catch (error) {
-          console.log("deposit bizain error:", error);
           return reject(new Error(this.$t('message.deposit.failed')));
         } finally {
           bizInstance.disconnect();
@@ -163,7 +136,6 @@ export default {
           rippleFingateInstance = instance.rippleFingateInstance;
           await rippleFingateInstance.connect();
           const balance = await rippleFingateInstance.getXrpBalance(address);
-          console.log('xrp balance:', balance);
           if (new BigNumber(amount).gt(balance)) {
             return reject(new Error(this.$t('message.deposit.more_than_available_balance', { balance })));
           }
@@ -174,7 +146,6 @@ export default {
           const hash = await rippleFingateInstance.transfer(secret, destination, amount, memo);
           return resolve(hash);
         } catch (error) {
-          console.log("deposit ripple error:", error);
           return reject(new Error(this.$t('message.deposit.failed')));
         } finally {
           rippleFingateInstance.disconnect();
@@ -191,7 +162,6 @@ export default {
           callFingateInstance = instance.callFingateInstance;
           await callFingateInstance.connect();
           const balance = await callFingateInstance.getCallBalance(address);
-          console.log('call balance:', balance);
           if (new BigNumber(amount).gt(balance)) {
             return reject(new Error(this.$t('message.deposit.more_than_available_balance', { balance })));
           }
@@ -199,7 +169,6 @@ export default {
           const hash = await callFingateInstance.transfer(secret, destination, amount, memo);
           return resolve(hash);
         } catch (error) {
-          console.log("deposit call error:", error);
           return reject(new Error(this.$t('message.deposit.failed')));
         } finally {
           callFingateInstance.disconnect();
@@ -216,7 +185,6 @@ export default {
         const instance = await fingateInstance.initWithContract("moac", this.getMoacHost(), scAddress)
         const { moacInstance, moacFingateInstance } = instance;
         const balance = await moacInstance.getBalance(address);
-        console.log('moac balance:', balance);
         const isJMOAC = this.coin.toLowerCase() === "jmoac";
         if (isJMOAC) {
           try {
@@ -234,7 +202,6 @@ export default {
             const hash = await moacFingateInstance.deposit(memo.jtaddress, amount, secret);
             return resolve(hash);
           } catch (error) {
-            console.log("deposit moac error:", error);
             return reject(new Error(this.$t('message.deposit.failed')));
           }
         } else {
@@ -242,7 +209,6 @@ export default {
             return reject(new Error(this.$t('message.deposit.moac_limit')));
           }
           let coin = this.coin.toUpperCase();
-          console.log("deposit moac erc20:" + coin);
           let tokenContract = this.moacTokens[coin].contract;
           try {
             const instance = await fingateInstance.initWithContract("moac", this.getMoacHost(), scAddress, tokenContract);
@@ -252,7 +218,6 @@ export default {
               return reject(new Error(this.$t('message.deposit.previous_deposit_not_finish')));
             }
             let tokenBalance = await moacErc20Instance.balanceOf(address);
-            console.log(coin + " balance:", tokenBalance);
             if (new BigNumber(amount).gt(tokenBalance)) {
               return reject(new Error(this.$t('message.deposit.more_than_available_balance', { balance: tokenBalance })));
             }
@@ -263,7 +228,7 @@ export default {
               try {
                 depositTokenHash = await moacFingateInstance.depositToken(memo.jtaddress, tokenContract, await moacErc20Instance.decimals(), amount, hash, secret);
               } catch (error) {
-                console.log("deposit token error:", error);
+                // retry on next iteration
               }
             }
             /* istanbul ignore else  */
@@ -271,7 +236,6 @@ export default {
               return resolve(depositTokenHash);
             }
           } catch (error) {
-            console.log("deposit moac erc20 error:", error);
             return reject(new Error(this.$t('message.deposit.failed')));
           }
         }
@@ -302,7 +266,6 @@ export default {
             const hash = await ethereumFingateInstance.deposit(secret, memo.jtaddress, amount);
             return resolve(hash);
           } catch (error) {
-            console.log("deposit eth error:", error);
             return reject(new Error(this.$t('message.deposit.failed')));
           }
         } else {
@@ -319,7 +282,6 @@ export default {
               return reject(new Error(this.$t('message.deposit.previous_deposit_not_finish')));
             }
             const balance = await etherErc20Instance.balanceOf(address);
-            console.log(coin + " balance:", balance);
             if (new BigNumber(amount).gt(balance)) {
               return reject(new Error(this.$t('message.deposit.more_than_available_balance', { balance: balance })));
             }
@@ -331,7 +293,7 @@ export default {
               try {
                 depositTokenHash = await ethereumFingateInstance.depositToken(memo.jtaddress, tokenContract, decimals, amount, transferHash, secret)
               } catch (error) {
-                console.log("deposit token error:", error);
+                // retry on next iteration
               }
             }
             /* istanbul ignore else  */
@@ -339,7 +301,6 @@ export default {
               return resolve(depositTokenHash);
             }
           } catch (error) {
-            console.log("deposit ethereum erc20 error:", error);
             return reject(new Error(this.$t('message.deposit.failed')));
           }
         }

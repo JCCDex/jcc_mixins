@@ -3,7 +3,6 @@ const sinon = require("sinon");
 const sandbox = sinon.createSandbox();
 import CallFingate from "jcc-call-utils";
 import BizainFingate from "jcc-bizain-utils";
-import StreamFingate from "jcc-stream-utils";
 import RippleFingate from "jcc-ripple-utils";
 
 describe('deposit instance', () => {
@@ -47,20 +46,6 @@ describe('deposit instance', () => {
       const fingate = instance.bizainFingateInstance;
       const instance1 = await fingateInstance.init("bizain");
       const fingate1 = instance1.bizainFingateInstance;
-      expect(fingate).toBe(fingate1);
-    })
-
-    it("should be inited if stream instance isn't inited", async function() {
-      const instance = await fingateInstance.init("stream");
-      const fingate = instance.stmFingateInstance;
-      expect(fingate instanceof StreamFingate).toBe(true);
-    })
-
-    it("should be inited once if stream instance is inited", async function() {
-      const instance = await fingateInstance.init("stream");
-      const fingate = instance.stmFingateInstance;
-      const instance1 = await fingateInstance.init("stream");
-      const fingate1 = instance1.stmFingateInstance;
       expect(fingate).toBe(fingate1);
     })
   })
