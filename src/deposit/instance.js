@@ -3,14 +3,7 @@ const fingateInstance = (() => {
 
   const init = (chain) => {
     return new Promise((resolve, reject) => {
-      if (chain === "call" && !obj.callFingateInstance) {
-        import("jcc-call-utils").then(m => {
-          const CallFingate = m.CallFingate;
-          const callFingateInstance = new CallFingate("wss://s1.callchain.live:5020");
-          obj = { callFingateInstance }
-          return resolve(obj);
-        })
-      } else if (chain === "ripple" && !obj.rippleFingateInstance) {
+      if (chain === "ripple" && !obj.rippleFingateInstance) {
         import("jcc-ripple-utils").then(m => {
           const RippleFingate = m.RippleFingate;
           const rippleFingateInstance = new RippleFingate('wss://s1.ripple.com');

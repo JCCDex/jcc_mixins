@@ -126,29 +126,6 @@ export default {
         }
       })
     },
-    depositCall(secret, address, amount, memo) {
-      return new Promise(async (resolve, reject) => {
-        const destination = "cs9AWskwRmJrcMsszqC4hWeedCL5vSpexv";
-        let callFingateInstance;
-        try {
-          this.changeLoadingState(this.$t("message.deposit.request_balance", { name: "CALL" }));
-          const instance = await fingateInstance.init("call");
-          callFingateInstance = instance.callFingateInstance;
-          await callFingateInstance.connect();
-          const balance = await callFingateInstance.getCallBalance(address);
-          if (new BigNumber(amount).gt(balance)) {
-            return reject(new Error(this.$t('message.deposit.more_than_available_balance', { balance })));
-          }
-          this.changeLoadingState(this.$t("message.deposit.request_balance_success"));
-          const hash = await callFingateInstance.transfer(secret, destination, amount, memo);
-          return resolve(hash);
-        } catch (error) {
-          return reject(new Error(this.$t('message.deposit.failed')));
-        } finally {
-          callFingateInstance.disconnect();
-        }
-      })
-    },
     depositMoac(secret, address, amount, memo) {
       return new Promise(async (resolve, reject) => {
         const minLimit = 0.1;

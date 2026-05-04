@@ -1,25 +1,10 @@
 import fingateInstance from "@/src/deposit/instance";
 const sinon = require("sinon");
 const sandbox = sinon.createSandbox();
-import CallFingate from "jcc-call-utils";
 import RippleFingate from "jcc-ripple-utils";
 
 describe('deposit instance', () => {
   describe("test init", function() {
-    it("should be inited if call instance isn't inited", async function() {
-      const instance = await fingateInstance.init("call");
-      const fingate = instance.callFingateInstance;
-      expect(fingate instanceof CallFingate).toBe(true);
-    })
-
-    it("should be inited once if call instance is inited", async function() {
-      const instance = await fingateInstance.init("call");
-      const fingate = instance.callFingateInstance;
-      const instance1 = await fingateInstance.init("call");
-      const fingate1 = instance1.callFingateInstance;
-      expect(fingate).toBe(fingate1);
-    })
-
     it("should be inited if ripple instance isn't inited", async function() {
       const instance = await fingateInstance.init("ripple");
       const fingate = instance.rippleFingateInstance;
