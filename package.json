@@ -9,7 +9,8 @@
   "scripts": {
     "deploy": "./publish.sh",
     "test": "npx gulp && npx jest --config test/unit/jest.conf.js --coverage",
-    "coveralls": "cat test/unit/coverage/lcov.info | coveralls"
+    "coveralls": "cat test/unit/coverage/lcov.info | coveralls",
+    "audit": "npm audit --omit=dev"
   },
   "repository": {
     "type": "git",
@@ -63,7 +64,7 @@
     "@babel/runtime": "^7.26.0",
     "bignumber.js": "^9.1.2",
     "jcc_common": "0.1.0",
-    "jcc_exchange": "^3.2.1",
+    "jcc_exchange": "^3.2.2",
     "jcc_wallet": "^4.0.9",
     "jcc-ethereum-utils": "^0.3.2",
     "jcc-moac-utils": "^0.3.10",
@@ -76,6 +77,12 @@
     "flatted": "^3.3.1",
     "gulp-bump": "^3.2.0",
     "meow": "^6.1.1",
-    "trim-newlines": "^3.0.1"
+    "trim-newlines": "^3.0.1",
+    "x-address-codec": {
+      "base-x": "^3.0.11"
+    },
+    "@mapbox/node-pre-gyp": {
+      "tar": "^7.5.13"
+    }
   }
 }
