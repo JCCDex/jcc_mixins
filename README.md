@@ -325,6 +325,25 @@ npm run deploy -- minor   # minor bump
 
 ---
 
+## Known Security Advisories
+
+以下漏洞因上游依赖已停止维护，目前无法自动修复，记录备忘，待后续依赖升级时处理。
+
+### CRITICAL — `coveralls → request → form-data`
+
+| 字段 | 说明 |
+|------|------|
+| **CVE** | [GHSA-fjxv-7rqg-78g4](https://github.com/advisories/GHSA-fjxv-7rqg-78g4) |
+| **受影响包** | `form-data < 2.5.4` |
+| **漏洞描述** | `form-data` 使用不安全的随机函数生成 multipart boundary，存在可预测性风险 |
+| **传递链** | `coveralls` → `request` → `form-data < 2.5.4` |
+| **附带问题** | `request`（已废弃）同时依赖漏洞版本的 `qs` 和 `tough-cookie` |
+| **影响范围** | `coveralls` 是 CI 覆盖率上报工具（devDependency），仅在 CI 流程中运行，**不在生产代码路径中** |
+| **修复路径** | 无。`request` 已停止维护；需等待 `coveralls` 切换到其他 HTTP 客户端，或替换为 `coveralls-next`、`c8` 等替代工具 |
+| **临时措施** | 无需处理；若 CI 安全要求严格，可考虑移除 `coveralls`，改用其他覆盖率服务（如 Codecov） |
+
+---
+
 ## License
 
 MIT © [JCCDex](https://github.com/JCCDex)
