@@ -8,6 +8,7 @@
   "main": "lib/index.js",
   "scripts": {
     "deploy": "./publish.sh",
+    "build": "npx gulp build",
     "test": "npx gulp && npx jest --config test/unit/jest.conf.js --coverage",
     "coveralls": "cat test/unit/coverage/lcov.info | coveralls",
     "audit": "npm audit --omit=dev"

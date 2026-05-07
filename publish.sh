@@ -7,7 +7,7 @@ if test "$username" = "jccdex"; then
     else
         npm version $1 --no-git-tag-version
     fi
-    gulp build
+    npx gulp build
     npm publish
 else
     echo "please login with jccdex account"
